@@ -1,0 +1,22 @@
+{
+    "name": "Asana Global Task View",
+    "description": "Shows all Asana tasks assigned to you across all of your workspaces",
+    "manifest_version": 2, 
+    "version": "1.0",
+	"icons": { 
+		"32": "images/icon-32.png",
+		"48": "images/icon-48.png",
+		"128": "images/icon-128.png" 
+	},
+	"browser_action": {
+		"default_icon": "images/icon-19.png",
+		"default_popup": "popup.html"
+	},
+    "permissions": [
+        "alarms"
+    ],
+	"options_ui": {
+        "page": "options.html",
+        "chrome_style": true
+    }
+}
