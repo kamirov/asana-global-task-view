@@ -1,6 +1,6 @@
 # Development Notes
 
-These notes were written for myself while developing. might be using a lot of my own notation, shorthand, and half-written-thoughts here. This is by no means documentation, though if cleaned up could be.
+These notes were written for myself while developing. Might be using a lot of my own notation, shorthand, and half-written-thoughts here. This is by no means documentation, though if cleaned up could be.
 
 ## Process Chain
 - Asana-related state stored as struct
@@ -79,7 +79,7 @@ Output:
 
 ### Tasks
 
-`GET /projects/179656347517471/tasks?opt_fields=name,completed,id,due_on,due_at,assignee&limit=10`
+`GET /projects/1796563471/tasks?opt_fields=name,completed,id,due_on,due_at,assignee&limit=10`
 
 Output: 
 ```JSON
