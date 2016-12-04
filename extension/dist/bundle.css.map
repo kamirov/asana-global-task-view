@@ -1,0 +1,1 @@
+{"version":3,"sources":["bundle.scss"],"names":[],"mappings":"AAAA,EACI,QAAA,MADJ,MAIQ,oBAAA,KAAA,iBAAA,KAAA,gBAAA,KAAA,YAAA","file":"bundle.css","sourcesContent":["* {\r\n    display: block;\r\n\r\n    div {\r\n        user-select: none;\r\n    }\r\n}"]}
