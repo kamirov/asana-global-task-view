@@ -2,6 +2,27 @@
 
 These notes were written for myself while developing. Might be using a lot of my own notation, shorthand, and half-written-thoughts here. This is by no means documentation, though if cleaned up could be.
 
+## To Do
+
+- [x] Decide on file structure
+- [x] Write out process chain
+- [x] Figure out the JSON API output
+- [ ] Figure out how to connect with Asana API
+- [x] Finish build pipeline
+- [x] Figure out unit tests
+   - User info GET request
+   - Workspace list GET request
+   - Projects list GET request
+   - Tasks list GET request
+   - Task complete POST request
+- [x] Write unit tests
+- [] Make popup mockup
+- [ ] Identify UI hierarchy (popup and options)
+- [ ] Static popup page (React, HTML, CSS)
+- [ ] Static options page (React, HTML, CSS)
+- [ ] Identify minimal state rep
+- [ ] Identify state location
+
 ## Process Chain
 - Asana-related state stored as struct
 - update_state listens for an update event

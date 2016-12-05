@@ -8,23 +8,10 @@ As a personal note, this is my first run at a lot of tools that I should've gott
 
 Still under construction!
 
-## To Do
+## Usage
 
-- [x] Decide on file structure
-- [x] Write out process chain
-- [x] Figure out the JSON API output
-- [ ] Figure out how to connect with Asana API
-- [x] Finish build pipeline
-- [x] Figure out unit tests
-   - User info GET request
-   - Workspace list GET request
-   - Projects list GET request
-   - Tasks list GET request
-   - Task complete POST request
-- [x] Write unit tests
-- [] Make popup mockup
-- [ ] Identify UI hierarchy (popup and options)
-- [ ] Static popup page (React, HTML, CSS)
-- [ ] Static options page (React, HTML, CSS)
-- [ ] Identify minimal state rep
-- [ ] Identify state location
+Coming soon!
+
+## Installation
+
+Coming soon!
