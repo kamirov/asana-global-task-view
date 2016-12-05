@@ -1,5 +1,1 @@
-// Folders
-let srcPath = "./extension/src";
-let dstPath = "./extension/dist";
-
-console.log(srcPath + "" + dstPath)
+import asana from 'Asana';

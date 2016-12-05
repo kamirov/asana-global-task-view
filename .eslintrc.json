@@ -4,7 +4,8 @@
         "ecmaVersion": 8,
         "ecmaFeatures": {
             "jsx": true
-        }
+        },
+    "sourceType": "module"
     },
     "env": {
         "browser": true,

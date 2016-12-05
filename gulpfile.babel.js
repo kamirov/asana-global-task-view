@@ -27,17 +27,18 @@ const config = {
 }
 
 
-// Script linting
-gulp.task("lint", () => 
+// Script linting (sync)
+gulp.task("lint", () => {
     gulp.src(config.srcPath + "/scripts/*.js")
       .pipe(eslint())
       .pipe(eslint.format())
-      .pipe(eslint.failAfterError())
-);
+      .on('error', (err) => {});
+      // .pipe(eslint.failAfterError())
+});
 
 
 // General scripts
-gulp.task("scripts", ["lint"], () => {
+gulp.task("scripts", ['lint'], () => {
 
   // Browserify config
   let bundler = browserify({
@@ -47,15 +48,15 @@ gulp.task("scripts", ["lint"], () => {
   bundler.transform(babelify);
 
   // Bundle and pipe
-  bundler.bundle()
-    .on('error', (err) => { console.error(err); })
+  return bundler.bundle()
+    .on('error', (err) => {})
     .pipe(source("bundle.js"))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(stripDebug())
     .pipe(uglify())
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(config.dstPath))
+    .pipe(gulp.dest(config.dstPath));
 })
 
 
@@ -91,10 +92,10 @@ gulp.task("styles", () =>
 
 
 // All tasks
-gulp.task("default", ["lint", "scripts", "styles", "images", "html"]);
+gulp.task("default", ["scripts", "styles", "images", "html"]);
 
 // Watcher
-gulp.task("watch", ["lint", "scripts", "styles", "images", "html"], () => {
+gulp.task("watch", ["default"], () => {
   gulp.watch(config.srcPath + "/*.html", ["html"]);
   gulp.watch(config.srcPath + "/images/*", ["images"]);
   gulp.watch(config.srcPath + "/scripts/*.js", ["scripts"]);
