@@ -49,6 +49,7 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
+    "asana": "^0.15.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.1"
   }
