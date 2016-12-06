@@ -39,7 +39,13 @@ These notes were written for myself while developing. Might be using a lot of my
          - Remove all tasks assigned to a user whose ID doesn't match `current_user.id`
    - Update state structure
 
-## Interface
+## React hierarchy
+
+- Extension
+  - Header
+  - TaskList
+     - Task
+        - TaskInfo
 
 ## Sample API Output
 

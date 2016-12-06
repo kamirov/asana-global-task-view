@@ -13,6 +13,7 @@ import babel from "gulp-babel";
 import eslint from "gulp-eslint";
 import changed from "gulp-changed";
 import imagemin from "gulp-imagemin";
+import rename from "gulp-rename";
 import minifyHTML from "gulp-minify-html";
 import concat from "gulp-concat";
 import stripDebug from "gulp-strip-debug";
@@ -32,7 +33,6 @@ gulp.task("lint", () => {
    gulp.src(config.srcPath + "/scripts/*.js")
       .pipe(eslint())
       .pipe(eslint.format())
-      .on('error', (err) => {});
       // .pipe(eslint.failAfterError())
 });
 
@@ -40,25 +40,27 @@ gulp.task("lint", () => {
 // General scripts
 gulp.task("scripts", ['lint'], () => {
 
-   const files = ["main", "options"];
+   const files = ["popup", "options"];
 
-   let tasks = files.map((file) =>
+   let tasks = files.map((file) => {
+
+      console.log("Building " + file + ".js...")
+
       browserify({
          entries: [config.srcPath + "/scripts/" + file + ".js"],
          debug: true
-     }).transform(babelify)
-     .bundle()
-     .on('error', (err) => {})
-     .pipe(source(file + "-bundle.js"))
-     .pipe(buffer())
-     .pipe(sourcemaps.init({ loadMaps: true }))
-//     .pipe(stripDebug())
-     .pipe(uglify())
-     .pipe(sourcemaps.write('.'))
-     .pipe(gulp.dest(config.dstPath + "/scripts"))
-   );
+      }).transform(babelify)
+      .bundle()
+      .on('error', (err) => {})
+      .pipe(source(file + "-bundle.js"))
+      .pipe(buffer())
+      .pipe(sourcemaps.init({ loadMaps: true }))
+      // .pipe(stripDebug())
+      .pipe(uglify())
+      .pipe(sourcemaps.write('./maps'))
+      .pipe(gulp.dest(config.dstPath + "/scripts"));
+   });
 });
-  
 
 
 // General images

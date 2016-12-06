@@ -1,19 +1,22 @@
 {
     "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaVersion": 8,
-        "ecmaFeatures": {
-            "jsx": true
-        },
-    "sourceType": "module"
+       "ecmaVersion": 8,
+       "ecmaFeatures": {
+          "jsx": true
+       },
+       "sourceType": "module"
     },
     "env": {
-        "browser": true,
-        "commonjs": true,
-        "mocha": true
+       "browser": true,
+       "commonjs": true,
+       "mocha": true
     },
     "rules": {
-        "no-console": 0
+       "no-console": 0,
+       "react/jsx-uses-vars": 1
     },
-    "plugins": []
+    "plugins": [
+       "react"
+    ]
 }
