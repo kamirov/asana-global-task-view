@@ -1,56 +1,46 @@
-// import React from 'React';
-// import ReactDOM from 'ReactDOM';
+// import asana from 'asana';
 
-// // class OptionsForm extends React.Component {
-// //   constructor(props) {
-// //     super(props);
-// //     this.state = {
-// //       value: 'Please write an essay about your favorite DOM element.'
-// //     };
+// let client = asana.Client.create().useAccessToken('0/e3d4d097511d056b1d701e5916f7e6b6');
 
-// //     this.handleChange = this.handleChange.bind(this);
-// //     this.handleSubmit = this.handleSubmit.bind(this);
-// //   }
+// client.users.me().then(function(me) {
+//   console.log(me);
+// });
 
-// //   handleChange(event) {
-// //     this.setState({value: event.target.value});
-// //   }
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-// //   handleSubmit(event) {
-// //     alert('An essay was submitted: ' + this.state.value);
-// //     event.preventDefault();
-// //   }
+class OptionsForm extends React.Component {
+  constructor(props) { 
+    super(props);
+    this.state = {
+      accessToken: localStorage.accessToken
+    };
 
-// //   render() {
-// //     return (
-// //       <form onSubmit={this.handleSubmit}>
-// //         <label>
-// //           Name:
-// //           <textarea value={this.state.value} onChange={this.handleChange} />
-// //         </label>
-// //         <input type="submit" value="Submit" />
-// //       </form>
-// //     );
-// //   }
-// // }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-// // ReactDOM.render(<OptionsForm />, document.getElementById('options-root'));
+  handleChange(event) {
+    this.setState({accessToken: event.target.value});
+  }
 
-// function Welcome(props) {
-//   return <h1>Hello, {props.name}</h1>;
-// }
+  handleSubmit(event) {
+    localStorage.accessToken = this.state.accessToken;
+    // chrome.storage.sync.set({accessToken: this.state.accessToken});
+    event.preventDefault();
+  }
 
-// function App() {
-//   return (
-//     <div>
-//       <Welcome name="Sara" />
-//       <Welcome name="Cahal" />
-//       <Welcome name="Edite" />
-//     </div>
-//   );
-// }
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Personal Access Token:
+          <input type="text" placeholder="" value={this.state.accessToken} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+}
 
-// ReactDOM.render(
-//   <App />,
-//   document.getElementById('root')
-// );
+ReactDOM.render(<OptionsForm />, document.getElementById('options-root'));
