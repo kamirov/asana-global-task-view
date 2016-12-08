@@ -30,7 +30,7 @@ const config = {
 
 // Script linting (sync)
 gulp.task("lint", () => {
-   gulp.src(config.srcPath + "/scripts/*.js")
+   gulp.src(`${config.srcPath}/scripts/*.js`)
       .pipe(eslint())
       .pipe(eslint.format())
       // .pipe(eslint.failAfterError())
@@ -44,37 +44,37 @@ gulp.task("scripts", ['lint'], () => {
 
    let tasks = files.map((file) => {
 
-      console.log("Building " + file + ".js...")
+      console.log(`Building ${file}.js...`)
 
       browserify({
-         entries: [config.srcPath + "/scripts/" + file + ".js"],
+         entries: [`${config.srcPath}/scripts/${file}.js`],
          debug: true
       }).transform(babelify)
       .bundle()
       .on('error', (err) => console.log(err) )
-      .pipe(source(file + "-bundle.js"))
+      .pipe(source(`${file}-bundle.js`))
       .pipe(buffer())
       .pipe(sourcemaps.init({ loadMaps: true }))
       // .pipe(stripDebug())
       .pipe(uglify())
       .pipe(sourcemaps.write('./maps'))
-      .pipe(gulp.dest(config.dstPath + "/scripts"));
+      .pipe(gulp.dest(`${config.dstPath}/scripts`));
    });
 });
 
 
 // General images
 gulp.task('images', () =>
-   gulp.src(config.srcPath + "/images/*")
-      .pipe(changed(config.dstPath + "/images"))
+   gulp.src(`${config.srcPath}/images/*`)
+      .pipe(changed(`${config.dstPath}/images`))
       .pipe(imagemin())
-      .pipe(gulp.dest(config.dstPath + "/images"))
+      .pipe(gulp.dest(`${config.dstPath}/images`))
 );
 
 
 // HTML tasks
 gulp.task("html", () =>
-   gulp.src(config.srcPath + '/*.html')
+   gulp.src(`${config.srcPath}/*.html`)
       .pipe(changed(config.dstPath))
       .pipe(minifyHTML())
       .pipe(gulp.dest(config.dstPath))
@@ -83,14 +83,14 @@ gulp.task("html", () =>
 
 // Styles tasks
 gulp.task("styles", () =>
-   gulp.src(config.srcPath + "/styles/*.scss")
+   gulp.src(`${config.srcPath}/styles/*.scss`)
       .pipe(concat('bundle.scss'))
       .pipe(sourcemaps.init())
       .pipe(sass())
       .pipe(autoprefix('last 2 versions'))
       .pipe(minifyCSS())
       .pipe(sourcemaps.write("."))
-      .pipe(gulp.dest(config.dstPath + "/styles"))
+      .pipe(gulp.dest(`${config.dstPath}/styles`))
 );
 
 
@@ -99,8 +99,8 @@ gulp.task("default", ["scripts", "styles", "images", "html"]);
 
 // Watcher
 gulp.task("watch", ["default"], () => {
-   gulp.watch(config.srcPath + "/*.html", ["html"]);
-   gulp.watch(config.srcPath + "/images/*", ["images"]);
-   gulp.watch(config.srcPath + "/scripts/*.js", ["scripts"]);
-   gulp.watch(config.srcPath + "/styles/*.scss", ["styles"]);
+   gulp.watch(`${config.srcPath}/*.html`, ["html"]);
+   gulp.watch(`${config.srcPath}/images/*`, ["images"]);
+   gulp.watch(`${config.srcPath}/scripts/*.js`, ["scripts"]);
+   gulp.watch(`${config.srcPath}/styles/*.scss`, ["styles"]);
 });

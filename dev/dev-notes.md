@@ -16,10 +16,11 @@ These notes were written for myself while developing. Might be using a lot of my
    - Tasks list GET request
    - Task complete POST request
 - [x] Write unit tests
-- [] Make popup mockup
-- [ ] Identify UI hierarchy (popup and options)
-- [ ] Static popup page (React, HTML, CSS)
-- [ ] Static options page (React, HTML, CSS)
+- [x] Make popup mockup
+- [x] Identify UI hierarchy (popup and options)
+- [x] Static popup page (React, HTML)
+- [x] Static options page (React, HTML)
+- [ ] CSS option and popup
 - [ ] Identify minimal state rep
 - [ ] Identify state location
 
