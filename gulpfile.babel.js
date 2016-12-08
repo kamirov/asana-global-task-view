@@ -40,7 +40,7 @@ gulp.task("lint", () => {
 // General scripts
 gulp.task("scripts", ['lint'], () => {
 
-   const files = ["popup", "options"];
+   const files = ["popup", "options", "background"];
 
    let tasks = files.map((file) => {
 
@@ -51,7 +51,7 @@ gulp.task("scripts", ['lint'], () => {
          debug: true
       }).transform(babelify)
       .bundle()
-      .on('error', (err) => {})
+      .on('error', (err) => console.log(err) )
       .pipe(source(file + "-bundle.js"))
       .pipe(buffer())
       .pipe(sourcemaps.init({ loadMaps: true }))

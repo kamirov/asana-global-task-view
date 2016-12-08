@@ -8,6 +8,9 @@
 		"48": "dist/images/icon-48.png",
 		"128": "dist/images/icon-128.png" 
 	},
+    "background": {
+        "page": "dist/background.html"
+    },
 	"browser_action": {
 		"default_icon": "dist/images/icon-19.png",
 		"default_popup": "dist/popup.html"

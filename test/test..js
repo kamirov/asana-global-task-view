@@ -1,5 +1,8 @@
 var assert =  require('assert');
 
+// import Asana_model from '../extension/src/scripts/Asana_model';
+// let asana_model = new Asana_model();
+
 describe("Asana", function() {
     describe(".connect()", function() {
         it("should connect to Asana API");

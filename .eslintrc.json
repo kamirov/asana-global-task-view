@@ -7,6 +7,9 @@
        },
        "sourceType": "module"
     },
+    "globals": {
+        "chrome": false
+    },
     "env": {
        "browser": true,
        "commonjs": true,
@@ -14,6 +17,7 @@
     },
     "rules": {
        "no-console": 0,
+       "no-unused-vars": 0,
        "react/jsx-uses-vars": 1
     },
     "plugins": [

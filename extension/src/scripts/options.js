@@ -10,37 +10,37 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 class OptionsForm extends React.Component {
-  constructor(props) { 
-    super(props);
-    this.state = {
-      accessToken: localStorage.accessToken
-    };
+   constructor(props) {
+      super(props);
+      this.state = {
+         accessToken: localStorage.accessToken
+      };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+      this.handleChange = this.handleChange.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
+   }
 
-  handleChange(event) {
-    this.setState({accessToken: event.target.value});
-  }
+   handleChange(event) {
+      this.setState({ accessToken: event.target.value });
+   }
 
-  handleSubmit(event) {
-    localStorage.accessToken = this.state.accessToken;
-    // chrome.storage.sync.set({accessToken: this.state.accessToken});
-    event.preventDefault();
-  }
+   handleSubmit(event) {
+      localStorage.accessToken = this.state.accessToken;
+      // chrome.storage.sync.set({accessToken: this.state.accessToken});
+      event.preventDefault();
+   }
 
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Personal Access Token:
+   render() {
+      return (
+         <form onSubmit={this.handleSubmit}>
+            <label>
+               Personal Access Token:
           <input type="text" placeholder="" value={this.state.accessToken} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-    );
-  }
+            </label>
+            <input type="submit" value="Submit" />
+         </form>
+      );
+   }
 }
 
 ReactDOM.render(<OptionsForm />, document.getElementById('options-root'));
