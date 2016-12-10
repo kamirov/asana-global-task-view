@@ -1,145 +1,84 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// Tmp data
-const samp_workspaces = {
-   "data": [
-      {
-         "id": 17961646,
-         "name": "Workspace A"
-      },
-      {
-         "id": 2342342,
-         "name": "Workspace B"
-      }
-   ],
-   "next_page": null
-};
-
-const samp_projects = {
-   "data": [
-      {
-         "id": 341234,
-         "name": "Project A"
-      },
-      {
-         "id": 2333,
-         "name": "Project B"
-      }
-   ],
-   "next_page": null
-};
-
-const samp_tasks = {
-   "data": [
-      {
-         "id": 2342344,
-         "name": "Task A",
-         "completed": false,
-         "due_on": null,
-         "due_at": null,
-         "assignee": {
-            "id": 2134234
-         }
-      },
-      {
-         "id": 234234,
-         "name": "Task B",
-         "completed": true,
-         "due_on": "2016-06-12",
-         "due_at": "2016-06-12T10:00:00.000Z",
-         "assignee": null
-      },
-   ],
-   "next_page": null
-};
-
-
-function update_state() {
-
-}
-
-// // Tmp (represents an Asana GET request)
-// function async_get(dataset) {
-//    return new Promise(function(resolve, reject) {
-//       setTimeout(() => {
-//          resolve(dataset);
-//       }, 3000);
-//    });
-// }
-
+window.background = chrome.extension.getBackgroundPage();
+window.asana_model = window.background.asana_model;
 
 class Extension extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
          loaded: false,
+         synced: false,
          workspaces: [],
+         current_workspace: '',
          tasks: []
       };
    }
 
+   formatWorkspaces() {
+      let workspaces = [];
+      for(let workspace_id in window.asana_model.items) {
+         workspaces.push({
+            id: workspace_id,
+            name: window.asana_model.items[workspace_id].name
+         });
+      }
+
+      return workspaces;
+   }
+
+   formatWorkspaceTasks() {
+      if (this.state.current_workspace) {
+         return window.asana_model.items[this.state.current_workspace];
+      } else { // We're returning all workspace tasks
+         let tasks = [];
+         for (let workspace_id in window.asana_model.items)
+            tasks.push(window.asana_model.items[workspace_id].tasks);
+         return tasks;
+      }  
+   }
+
+
    componentDidMount() {
+      console.log('mounting');
+      // Take model data after we've synced
+      window.asana_model.wait_for_sync()
+      .then(() => {
+         console.log('success!');
 
-      // asana_model.update_state().then()
-
-      // // Get list of workspaces
-      // let workspaces_raw;
-
-      // console.log("Getting all workspaces...")
-      // async_get(samp_workspaces).then(function(response) {
-      //    console.log("Got workspaces");
-
-      //    this.state.workspaces.data.forEach((workspace) => {
-      //       console.log("Getting all projects in " + workspace.name + "...")
-      //       async_get(samp_projects).then(function(response) {
-      //          console.log("Got projects");
-
-      //          return 
-      //       });
-      //    });
-      // });
-
-      // setTimeout(() => {
-      //    this.setState({ workspaces: samp_workspaces });
-
-      //    this.state.workspaces.data.forEach((workspace) => {
-
-      //       console.log("Getting all projects in " + workspace.name + "...")
-
-      //       setTimeout(() => {
-      //          this.setState({ projects: samp_projects })
-      //          this.state.projects.data.forEach((project) => {
-
-      //             console.log("Getting all tasks in " + project.name + "...")
-
-      //             setTimeout(() => {
-      //                this.setState({ tasks_data: samp_tasks });
-      //             }, 3000);
-      //          });
-
-      //       }, 3000);
-      //    });
-
-      // }, 2000);
+         this.setState({
+            loaded: true,
+            synced: true,
+            workspaces: this.formatWorkspaces(),
+            tasks: this.formatWorkspaceTasks()
+         });
+      })
+      .catch((err) => {
+         console.error(err);
+      });
    }
 
    render() {
 
       let extension_contents;
 
-      if (this.state.loaded) {
+      console.log(this.state, this.state.loaded && this.state.synced);
+
+      if (this.state.loaded && this.state.synced) {
          extension_contents = <div>
-            <Header workspaces={this.state.workspaces} />
+            <Header workspaces={this.state.workspaces} current={this.state.current_workspace} />
             <TaskList tasks={this.state.tasks} />
          </div>;
-      }
-      else {
+      } else if (this.state_loaded) {
+         extension_contents = <div className="loading-overlay">
+            <span>Error syncing...</span>
+         </div>;
+      } else {
          extension_contents = <div className="loading-overlay">
             <span>Loading...</span>
          </div>;
       }
-
 
       return (
          <div className="extension">
@@ -161,7 +100,7 @@ class Header extends React.Component {
       // Make workspace options list
       let workspaces = [];
       workspaces.push(<option value="">All Workspaces</option>);
-      this.props.workspaces.data.forEach((workspace) => {
+      this.props.workspaces.forEach((workspace) => {
          workspaces.push(<option value={workspace.id}>{workspace.name}</option>);
       });
 
