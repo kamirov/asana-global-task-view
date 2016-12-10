@@ -9,7 +9,7 @@
 		"128": "dist/images/icon-128.png" 
 	},
     "background": {
-        "page": "dist/background.html"
+        "scripts": ["dist/scripts/background-bundle.js"]
     },
 	"browser_action": {
 		"default_icon": "dist/images/icon-19.png",

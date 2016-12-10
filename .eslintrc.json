@@ -1,14 +1,16 @@
 {
     "extends": "eslint:recommended",
     "parserOptions": {
-       "ecmaVersion": 8,
+       "ecmaVersion": 6,
        "ecmaFeatures": {
           "jsx": true
        },
        "sourceType": "module"
     },
     "globals": {
-        "chrome": false
+        "chrome": false,
+        "Symbol": false,
+        "Promise": false
     },
     "env": {
        "browser": true,

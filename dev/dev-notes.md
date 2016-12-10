@@ -64,6 +64,38 @@ Output:
 }
 ```
 
+### State
+
+Model state (for tasks) should be structured as:
+
+```JSON
+{
+   "workspaces": {
+      WORKSPACE_NAME: {
+         "id": WORKSPACE_ID,   
+         "tasks": [{
+            "id": TASK_ID,
+            "name": TASK_NAME,
+            "due_on": DUE_DATE,
+            "due_at": DUE_TIME,
+            "project": PROJECT_NAME
+         }, {
+            "id": TASK_ID,
+            "name": TASK_NAME,
+            "due_on": DUE_DATE,
+            "due_at": DUE_TIME,
+            "project": PROJECT_NAME
+         }, {
+            "id": TASK_ID,
+            "name": TASK_NAME,
+            "due_on": DUE_DATE,
+            "due_at": DUE_TIME,
+            "project": PROJECT_NAME
+         }]
+      }
+   }
+}
+```
 
 ### Workspaces
 `GET /workspaces?opt_fields=name,id&limit=10`
