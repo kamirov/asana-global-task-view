@@ -34,7 +34,7 @@ class Extension extends React.Component {
       } else { // We're returning all workspace tasks
          let tasks = [];
          for (let workspace_id in window.asana_model.items)
-            tasks.push(window.asana_model.items[workspace_id].tasks);
+            tasks = [...tasks, ...window.asana_model.items[workspace_id].tasks];
          return tasks;
       }  
    }
@@ -125,15 +125,47 @@ class TaskList extends React.Component {
    }
 
    render() {
-      return (
-         <ul>
 
-         </ul>
+      // Make task list
+      let tasks = [];
+      this.props.tasks.forEach((task) => {
+         console.log(task);
+         tasks.push(
+            <li>
+               <Task task_id={task.id} task_name={task.name} project={task.project} />
+            </li>
+         );
+      });
+      
+      console.log("tasks", this.props.tasks, tasks);
+
+      return (
+         <ul>{tasks}</ul>
       );
    }
 }
 
+
 class Task extends React.Component {
+   constructor(props) {
+      super(props);
+      this.state = {
+         
+      };
+   }
+
+   render() {
+      return (
+         <span>
+            <span>{this.props.task_name}</span>
+            <TaskInfo project={this.props.project} />
+         </span>
+      );
+   }
+}
+
+
+class TaskInfo extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -142,9 +174,10 @@ class Task extends React.Component {
 
    render() {
       return (
-         <span></span>
+         <span>{this.props.project}</span>
       );
    }
 }
+
 
 ReactDOM.render(<Extension />, document.getElementById('popup-root'));
