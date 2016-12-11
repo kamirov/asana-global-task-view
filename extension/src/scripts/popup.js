@@ -29,7 +29,7 @@ class Extension extends React.Component {
    handleDateChange(event) {
       localStorage.dueToday = event.target.checked;
          
-         console.log(event.target)
+         console.log(event)
          console.log(localStorage);
          console.log(this.state);
       this.setState({
@@ -69,12 +69,15 @@ class Extension extends React.Component {
 
          let preDateTasks = tasks;
          tasks = [];
-         console.log('filtering');
          preDateTasks.forEach((task) => {
+            // Only look at tasks with a due date
             if (task.dueOn) {
+
+               // Have to do some fiddling with the date returned by Asana. I'm not sure why, but when converted to a Date, it's off by one day.
                let dueOn = new Date(task.dueOn);
                dueOn.setHours(0,0,0,0);
                dueOn.setDate(dueOn.getDate() + 1);
+
                if (today.getTime() === dueOn.getTime())
                   tasks.push(task); 
             }

@@ -31,6 +31,8 @@ These notes were written for myself while developing. Might be using a lot of my
 - [ ] Handle multiproject tasks
 - [ ] Handle long task names
 - [ ] Get proxima nova font
+- [ ] Handle no-project tasks
+- [ ] Handle subtasks
 
 ## Process Chain
 - Asana-related state stored as struct
