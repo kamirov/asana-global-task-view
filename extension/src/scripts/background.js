@@ -1,2 +1,2 @@
-import Asana_model from './Asana_model';
-window.asana_model = new Asana_model(localStorage.accessToken);
+import AsanaModel from './AsanaModel';
+window.asanaModel = new AsanaModel(localStorage.accessToken);

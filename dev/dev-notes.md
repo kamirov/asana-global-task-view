@@ -28,6 +28,9 @@ These notes were written for myself while developing. Might be using a lot of my
 - [ ] Task due at date
 - [ ] Assignee
 - [ ] Task tags
+- [ ] Handle multiproject tasks
+- [ ] Handle long task names
+- [ ] Get proxima nova font
 
 ## Process Chain
 - Asana-related state stored as struct

@@ -23,7 +23,7 @@ export default class Asana_model {
     */
    constructor(accessToken) {
       this.client = asana.Client.create().useAccessToken(accessToken);
-      this.sync_interval_initialized = false;
+      this.syncIntervalInitialized = false;
       this.sync();
    }
 
@@ -42,8 +42,8 @@ export default class Asana_model {
     * Gets user's personal and workspace data. Updates personal data directly, returns workspace data to be processed.
     * @return {Promise} Promise containing workspace data
     */
-   update_user() {
-      chrome.extension.getBackgroundPage().console.log("update_user");
+   updateUser() {
+      chrome.extension.getBackgroundPage().console.log("updateUser");
 
       return new Promise((resolve, reject) => {
 
@@ -88,16 +88,16 @@ export default class Asana_model {
    }
 
 
-   update_projects() {
-      chrome.extension.getBackgroundPage().console.log("update_projects");
+   updateProjects() {
+      chrome.extension.getBackgroundPage().console.log("updateProjects");
 
       return new Promise((resolve, reject) => {
 
-         let current_idx = 0;
-         let num_indices = Object.keys(this.items).length;  // Number of workspaces
+         let currentIdx = 0;
+         let numIndices = Object.keys(this.items).length;  // Number of workspaces
 
-         for (let workspace_key in this.items) {
-            let workspace = this.items[workspace_key];
+         for (let workspaceKey in this.items) {
+            let workspace = this.items[workspaceKey];
 
             // Get list of projects in workspace
             this.client.projects.findAll({
@@ -108,11 +108,11 @@ export default class Asana_model {
                // Add projects to state
                this.items[workspace.id].projects = res.data;
                this.project_count += res.data.length;
-               current_idx++;
+               currentIdx++;
 
-               // chrome.extension.getBackgroundPage().console.log(`${current_idx} of ${num_indices}`);
+               // chrome.extension.getBackgroundPage().console.log(`${currentIdx} of ${numIndices}`);
 
-               if (current_idx === num_indices) {
+               if (currentIdx === numIndices) {
                   // chrome.extension.getBackgroundPage().console.log(res);
                   resolve();
                }
@@ -122,15 +122,15 @@ export default class Asana_model {
    }
 
 
-   update_tasks() {
-      chrome.extension.getBackgroundPage().console.log("update_tasks");
+   updateTasks() {
+      chrome.extension.getBackgroundPage().console.log("updateTasks");
       return new Promise((resolve, reject) => {
 
-         let current_idx = 0;
-         let num_indices = this.project_count;
+         let currentIdx = 0;
+         let numIndices = this.project_count;
 
-         for (let workspace_key in this.items) {
-            let workspace = this.items[workspace_key];
+         for (let workspaceKey in this.items) {
+            let workspace = this.items[workspaceKey];
 
             chrome.extension.getBackgroundPage().console.log("workspace.projects", workspace.projects);
             workspace.projects.forEach(project => {
@@ -142,23 +142,23 @@ export default class Asana_model {
                   completed_since: 'now',
                   opt_fields: 'name,id,due_on,due_at,assignee'
                }).then(res => {
-                  current_idx++;
+                  currentIdx++;
                   chrome.extension.getBackgroundPage().console.log(res);
 
 
                   chrome.extension.getBackgroundPage().console.log("res.data", res.data);
                   res.data.forEach(task => {
-                     this.items[workspace_key].tasks.push({
+                     this.items[workspaceKey].tasks.push({
                         id: task.id,
                         name: task.name,
-                        due_at: task.due_at,
-                        due_on: task.due_on,
+                        dueAt: task.due_at,
+                        dueOn: task.due_on,
                         project: project.name,
                         workspace: workspace.name
                      });
                   });
 
-                  if (current_idx === num_indices) {
+                  if (currentIdx === numIndices) {
                      // chrome.extension.getBackgroundPage().console.log(res);
                   resolve();
                }
@@ -176,13 +176,13 @@ export default class Asana_model {
     */
    sync() {
 
-      if (!this.sync_interval_initialized)
+      if (!this.syncIntervalInitialized)
       {
          setInterval(() => {
             this.sync();
          }, 1000 * 60 * 30);
 
-         this.sync_interval_initialized = true;
+         this.syncIntervalInitialized = true;
       }
       
       return new Promise((resolve, reject) => {
@@ -194,9 +194,9 @@ export default class Asana_model {
          chrome.extension.getBackgroundPage().console.log("chain_start");
 
          // Update state
-         this.update_user()
-         .then((workspaces) => this.update_projects(workspaces))
-         .then((projects) => this.update_tasks(projects))
+         this.updateUser()
+         .then((workspaces) => this.updateProjects(workspaces))
+         .then((projects) => this.updateTasks(projects))
          .then(() => {
          chrome.extension.getBackgroundPage().console.log("success");
 
@@ -211,7 +211,7 @@ export default class Asana_model {
       });
    }
 
-   wait_for_sync() {
+   waitForSync() {
       return new Promise((resolve, reject) => {
          // If we're syncing, then check back regularly until we're done
          if (this.status === STATUS.SYNC_IN_PROGRESS) {
