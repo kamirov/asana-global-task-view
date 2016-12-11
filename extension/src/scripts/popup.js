@@ -71,10 +71,14 @@ class Extension extends React.Component {
          tasks = [];
          console.log('filtering');
          preDateTasks.forEach((task) => {
-         console.log(task, today, Date.parse(task.dueOn), today === Date.parse(task.dueOn));
-            if (today === Date.parse(task.dueOn))
-               tasks.push(task);
-         });
+            if (task.dueOn) {
+               let dueOn = new Date(task.dueOn);
+               dueOn.setHours(0,0,0,0);
+               dueOn.setDate(dueOn.getDate() + 1);
+               if (today.getTime() === dueOn.getTime())
+                  tasks.push(task); 
+            }
+       });
 
       }
 
