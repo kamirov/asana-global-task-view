@@ -11,9 +11,18 @@ class Extension extends React.Component {
          loaded: false,
          synced: false,
          workspaces: [],
-         current_workspace: '',
          tasks: []
       };
+
+      this.handleWorkspaceSelect = this.handleWorkspaceSelect.bind(this);
+   }
+
+   handleWorkspaceSelect(event) {
+      localStorage.currentWorkspace = event.target.value;
+
+      this.setState({
+         tasks: this.formatWorkspaceTasks()
+      });
    }
 
    formatWorkspaces() {
@@ -29,12 +38,13 @@ class Extension extends React.Component {
    }
 
    formatWorkspaceTasks() {
-      if (this.state.current_workspace) {
-         return window.asana_model.items[this.state.current_workspace];
+      if (localStorage.currentWorkspace) {
+         return window.asana_model.items[localStorage.currentWorkspace].tasks;
       } else { // We're returning all workspace tasks
          let tasks = [];
          for (let workspace_id in window.asana_model.items)
             tasks = [...tasks, ...window.asana_model.items[workspace_id].tasks];
+
          return tasks;
       }  
    }
@@ -62,20 +72,19 @@ class Extension extends React.Component {
    render() {
 
       let extension_contents;
-
-      console.log(this.state, this.state.loaded && this.state.synced);
+      let className = "extension";
 
       if (this.state.loaded && this.state.synced) {
-         extension_contents = <div>
-            <Header workspaces={this.state.workspaces} current={this.state.current_workspace} />
+         extension_contents = <div className="extension">
+            <Header handleWorkspaceSelect={this.handleWorkspaceSelect} workspaces={this.state.workspaces} />
             <TaskList tasks={this.state.tasks} />
          </div>;
       } else if (this.state_loaded) {
-         extension_contents = <div className="loading-overlay">
+         extension_contents = <div className="extension">
             <span>Error syncing...</span>
          </div>;
       } else {
-         extension_contents = <div className="loading-overlay">
+         extension_contents = <div className="extension">
             <span>Loading...</span>
          </div>;
       }
@@ -104,10 +113,12 @@ class Header extends React.Component {
          workspaces.push(<option value={workspace.id}>{workspace.name}</option>);
       });
 
+      console.log(this.props);
+
       return (
-         <form>
-            <select>{workspaces}</select>
-            <label>
+         <form className="header">
+            <select value={localStorage.currentWorkspace} onChange={this.props.handleWorkspaceSelect} className="workspace-select">{workspaces}</select>
+            <label className="tagged-cont">s
                <input type="text" placeholder="Tagged" />
             </label>
          </form>
@@ -131,16 +142,14 @@ class TaskList extends React.Component {
       this.props.tasks.forEach((task) => {
          console.log(task);
          tasks.push(
-            <li>
-               <Task task_id={task.id} task_name={task.name} project={task.project} />
-            </li>
+            <Task task_id={task.id} task_name={task.name} project={task.project} />
          );
       });
       
       console.log("tasks", this.props.tasks, tasks);
 
       return (
-         <ul>{tasks}</ul>
+         <div className="task-list">{tasks}</div>
       );
    }
 }
@@ -149,17 +158,23 @@ class TaskList extends React.Component {
 class Task extends React.Component {
    constructor(props) {
       super(props);
-      this.state = {
-         
+      this.state = { 
       };
    }
 
    render() {
       return (
-         <span>
-            <span>{this.props.task_name}</span>
+         <div className="task">
+            <div className="check-and-name">
+               <div className="check">
+                  <svg viewBox="0 0 32 32">
+                     <polygon points="27.672,4.786 10.901,21.557 4.328,14.984 1.5,17.812 10.901,27.214 30.5,7.615 "></polygon>
+                  </svg>
+               </div>
+               <span className="name">{this.props.task_name}</span>
+            </div>
             <TaskInfo project={this.props.project} />
-         </span>
+         </div>
       );
    }
 }
@@ -174,7 +189,9 @@ class TaskInfo extends React.Component {
 
    render() {
       return (
-         <span>{this.props.project}</span>
+         <div className="task-info pill-container">
+            <span className="pill project">{this.props.project}</span>
+         </div>
       );
    }
 }

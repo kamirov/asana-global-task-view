@@ -1,0 +1,72 @@
+// POPUP
+
+#popup-root {
+   width: 500px;
+   .extension {
+      .header {
+         .workspace-select {
+            border: none;
+            font-weight: bold;
+            font-size: 1.25rem;
+         }
+
+         .tagged-cont {
+            display: none;
+         }
+      }
+
+      .task-list {
+         .task {
+            border-bottom: 1px solid transparent;
+            border-top: 1px solid transparent;
+            font-size: 0.8rem;
+            display: flex;
+            height: 34px;
+
+            .check-and-name
+            {
+               .check {
+                  border: 1px solid #b9bcc0;
+                  border-radius: 50%;
+                  cursor: pointer;
+                  fill: #cdcfd2;
+                  height: 20px;
+                  width: 20px;
+                  display: inline-flex;
+                  align-items: center;
+                  justify-content: center;
+                  margin-right: 10px;
+
+                  svg {
+                     margin: 0 auto;
+                     height: 12px;
+                     width: 12px;                  
+                  }
+               }
+               
+               .name {
+
+               }
+            }   
+
+            .task-info {
+
+               .pill {
+                  background: #f8f8f9;
+                  border-color: #e1e2e4;
+                  color: #676d76;
+                  font-family: "proxima-nova", "Helvetica Neue", "Helvetica", Arial, sans-serif;
+                  font-size: 0.75rem;
+                  border-radius: 8.5px;
+                  padding: 5px 10px;
+               }
+
+               .project {
+                  
+               }
+
+            }
+         }
+      }
+   }
+}
