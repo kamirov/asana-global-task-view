@@ -118,7 +118,7 @@ class Header extends React.Component {
       return (
          <form className="header">
             <select value={localStorage.currentWorkspace} onChange={this.props.handleWorkspaceSelect} className="workspace-select">{workspaces}</select>
-            <label className="tagged-cont">s
+            <label className="tagged-cont">
                <input type="text" placeholder="Tagged" />
             </label>
          </form>
@@ -164,7 +164,7 @@ class Task extends React.Component {
 
    render() {
       return (
-         <div className="task">
+         <div className="task" title="Click to complete this task">
             <div className="check-and-name">
                <div className="check">
                   <svg viewBox="0 0 32 32">

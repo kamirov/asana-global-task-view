@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "asana": "^0.15.0",
+    "hover.css": "^2.0.2",
     "react": "^15.4.1",
     "react-dom": "^15.4.1"
   }

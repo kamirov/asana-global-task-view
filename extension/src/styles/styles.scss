@@ -1,10 +1,17 @@
-// POPUP
+// SEC_GLOBAL
+
+
+
+// SEC_POPUP
 
 #popup-root {
    width: 500px;
    .extension {
       .header {
+         margin: 1rem 0;
+         
          .workspace-select {
+            cursor: pointer;
             border: none;
             font-weight: bold;
             font-size: 1.25rem;
@@ -17,21 +24,25 @@
 
       .task-list {
          .task {
-            border-bottom: 1px solid transparent;
+            border-bottom: 1px solid #e1e2e4;
             border-top: 1px solid transparent;
             font-size: 0.8rem;
             display: flex;
-            height: 34px;
+            align-content: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            cursor: pointer;
 
-            .check-and-name
-            {
+            .check-and-name {
+               margin-left: 4px;
+
                .check {
                   border: 1px solid #b9bcc0;
                   border-radius: 50%;
                   cursor: pointer;
                   fill: #cdcfd2;
-                  height: 20px;
-                  width: 20px;
+                  height: 1.1rem;
+                  width: 1.1rem;
                   display: inline-flex;
                   align-items: center;
                   justify-content: center;
@@ -39,8 +50,8 @@
 
                   svg {
                      margin: 0 auto;
-                     height: 12px;
-                     width: 12px;                  
+                     height: 0.8rem;
+                     width: 0.8rem;                  
                   }
                }
                
@@ -64,7 +75,19 @@
                .project {
                   
                }
+            }
 
+            &:hover, &:focus, &:active {
+               background: #f8f8f8;
+            }
+
+            &:first-child {
+               padding-top: 0;
+            }
+
+            &:last-child {
+               padding-bottom: 0;
+               border-bottom: none;
             }
          }
       }
