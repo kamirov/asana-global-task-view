@@ -38,6 +38,7 @@ class Extension extends React.Component {
    }
 
    formatWorkspaces() {
+      console.log("formatting workspaces");
       let workspaces = [];
       for(let workspaceId in window.asanaModel.items) {
          workspaces.push({
@@ -46,21 +47,36 @@ class Extension extends React.Component {
          });
       }
 
+      console.log("done formatting workspaces");
+
       return workspaces;
    }
 
    filterTasks() {
       let tasks = [];
 
+      console.log("filtering tasks");
+
       // Filter by workspace
       if (localStorage.currentWorkspace) {
+         console.log(`getting only workspace's tasks (${localStorage.currentWorkspace})`)
          tasks = window.asanaModel.items[localStorage.currentWorkspace].tasks;
       } else { // We're returning all workspace tasks
+         console.log(`getting all workspace tasks`)
          for (let workspaceId in window.asanaModel.items) {
-            tasks = [...tasks, ...window.asanaModel.items[workspaceId].tasks];
+
+            console.log(`for workspace ID ${workspaceId}`)
+
+            if (window.asanaModel.items[workspaceId])
+               tasks = [...tasks, ...window.asanaModel.items[workspaceId].tasks];
          }
 
       }  
+
+      
+      console.log("done filtering tasks by workspace");
+
+      console.log(tasks);
 
       // Filter by date
       if (localStorage.dueToday) {
@@ -82,8 +98,11 @@ class Extension extends React.Component {
                   tasks.push(task); 
             }
        });
-
+       
       }
+
+      console.log("done filtering tasks by date");
+      console.log(tasks);
 
       return tasks;
    }

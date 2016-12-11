@@ -198,7 +198,14 @@ export default class Asana_model {
          .then((workspaces) => this.updateProjects(workspaces))
          .then((projects) => this.updateTasks(projects))
          .then(() => {
-         chrome.extension.getBackgroundPage().console.log("success");
+            chrome.extension.getBackgroundPage().console.log("success");
+
+            // Some last minute fixes
+            
+            // Remove locally cached values if they are no longer valid
+            if (!this.items[localStorage.currentWorkspace])
+               localStorage.removeItem('currentWorkspace');
+            
 
             this.status = STATUS.SYNC_SUCCESS;
             // Is this how we should handle success?
@@ -222,7 +229,7 @@ export default class Asana_model {
                }
                else if (this.status === STATUS.SYNC_ERROR) {
                   clearInterval(interval);
-                  reject();               
+                  reject();
                }
             }, 500);
          } else if (this.status === STATUS.SYNC_SUCCESS) {
