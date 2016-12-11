@@ -164,7 +164,7 @@ class Task extends React.Component {
 
    render() {
       return (
-         <div className="task" title="Click to complete this task">
+         <div className="task">
             <div className="check-and-name">
                <div className="check">
                   <svg viewBox="0 0 32 32">

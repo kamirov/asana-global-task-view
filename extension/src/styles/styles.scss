@@ -5,16 +5,21 @@
 // SEC_POPUP
 
 #popup-root {
-   width: 500px;
+   min-width: 500px;
+
    .extension {
       .header {
-         margin: 1rem 0;
+         margin: 1rem 0 0;
          
          .workspace-select {
             cursor: pointer;
             border: none;
             font-weight: bold;
             font-size: 1.25rem;
+
+            &:hover {
+               color: #777;
+            }
          }
 
          .tagged-cont {
@@ -30,7 +35,7 @@
             display: flex;
             align-content: center;
             justify-content: space-between;
-            padding: 10px 0;
+            padding: 0.5rem 0;
             cursor: pointer;
 
             .check-and-name {
@@ -82,12 +87,12 @@
             }
 
             &:first-child {
-               padding-top: 0;
+               // padding-top: 0;
             }
 
             &:last-child {
-               padding-bottom: 0;
-               border-bottom: none;
+               // padding-bottom: 0;
+               // border-bottom: none;
             }
          }
       }
