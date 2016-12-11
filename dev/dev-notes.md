@@ -7,7 +7,7 @@ These notes were written for myself while developing. Might be using a lot of my
 - [x] Decide on file structure
 - [x] Write out process chain
 - [x] Figure out the JSON API output
-- [ ] Figure out how to connect with Asana API
+- [x] Figure out how to connect with Asana API
 - [x] Finish build pipeline
 - [x] Figure out unit tests
    - User info GET request
@@ -20,9 +20,14 @@ These notes were written for myself while developing. Might be using a lot of my
 - [x] Identify UI hierarchy (popup and options)
 - [x] Static popup page (React, HTML)
 - [x] Static options page (React, HTML)
-- [ ] CSS option and popup
-- [ ] Identify minimal state rep
-- [ ] Identify state location
+- [x] CSS option and popup
+- [x] Identify minimal state rep
+- [x] Identify state location
+- [ ] Manual syncing
+- [ ] Task completion
+- [ ] Task due at date
+- [ ] Assignee
+- [ ] Task tags
 
 ## Process Chain
 - Asana-related state stored as struct

@@ -1,15 +1,21 @@
 // SEC_GLOBAL
 
+.truncate {
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
 
 
 // SEC_POPUP
 
 #popup-root {
-   min-width: 500px;
+   min-width: 550px;
+   font-family: "proxima-nova", "Helvetica Neue", "Helvetica", Arial, sans-serif;
 
    .extension {
       .header {
-         margin: 1rem 0 0;
+         margin: 1rem 0;
          
          .workspace-select {
             cursor: pointer;
@@ -35,7 +41,7 @@
             display: flex;
             align-content: center;
             justify-content: space-between;
-            padding: 0.5rem 0;
+            padding: 0.4rem 0;
             cursor: pointer;
 
             .check-and-name {
@@ -68,13 +74,16 @@
             .task-info {
 
                .pill {
+                  @extend .truncate;
                   background: #f8f8f9;
                   border-color: #e1e2e4;
                   color: #676d76;
-                  font-family: "proxima-nova", "Helvetica Neue", "Helvetica", Arial, sans-serif;
-                  font-size: 0.75rem;
+                  font-size: 0.7rem;
+                  font-weight: bold;
                   border-radius: 8.5px;
                   padding: 5px 10px;
+                  display: inline-block;
+                  max-width: 4rem;
                }
 
                .project {
@@ -88,6 +97,7 @@
 
             &:first-child {
                // padding-top: 0;
+               border-top: 1px solid #e1e2e4;
             }
 
             &:last-child {

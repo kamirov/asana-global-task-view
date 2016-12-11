@@ -154,6 +154,7 @@ export default class Asana_model {
                         due_at: task.due_at,
                         due_on: task.due_on,
                         project: project.name,
+                        workspace: workspace.name
                      });
                   });
 

@@ -42,8 +42,9 @@ class Extension extends React.Component {
          return window.asana_model.items[localStorage.currentWorkspace].tasks;
       } else { // We're returning all workspace tasks
          let tasks = [];
-         for (let workspace_id in window.asana_model.items)
+         for (let workspace_id in window.asana_model.items) {
             tasks = [...tasks, ...window.asana_model.items[workspace_id].tasks];
+         }
 
          return tasks;
       }  
@@ -63,9 +64,6 @@ class Extension extends React.Component {
             workspaces: this.formatWorkspaces(),
             tasks: this.formatWorkspaceTasks()
          });
-      })
-      .catch((err) => {
-         console.error(err);
       });
    }
 
@@ -140,9 +138,9 @@ class TaskList extends React.Component {
       // Make task list
       let tasks = [];
       this.props.tasks.forEach((task) => {
-         console.log(task);
+
          tasks.push(
-            <Task task_id={task.id} task_name={task.name} project={task.project} />
+            <Task task_id={task.id} task_name={task.name} project={task.project} workspace={task.workspace} />
          );
       });
       
@@ -173,7 +171,7 @@ class Task extends React.Component {
                </div>
                <span className="name">{this.props.task_name}</span>
             </div>
-            <TaskInfo project={this.props.project} />
+            <TaskInfo project={this.props.project} workspace={this.props.workspace} />
          </div>
       );
    }
@@ -185,12 +183,22 @@ class TaskInfo extends React.Component {
       super(props);
       this.state = {
       };
+
+      console.log(this.props);
    }
 
    render() {
       return (
          <div className="task-info pill-container">
-            <span className="pill project">{this.props.project}</span>
+            {
+               !localStorage.currentWorkspace && 
+                  <span className="pill workspace">
+                     {this.props.workspace}
+                  </span>
+            }
+            <span className="pill project">
+               {this.props.project}
+            </span>
          </div>
       );
    }
