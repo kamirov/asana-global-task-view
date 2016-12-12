@@ -14,8 +14,41 @@ class Extension extends React.Component {
          tasks: []
       };
 
+      this.handleSync = this.handleSync.bind(this);
       this.handleWorkspaceSelect = this.handleWorkspaceSelect.bind(this);
       this.handleDateChange = this.handleDateChange.bind(this);
+   }
+
+   handleSync(event) {
+      console.log('handleSync');
+
+      window.asanaModel.sync();
+      this.refresh();
+   }
+
+   refresh() {
+      
+      // Zero state data
+      this.setState({
+         loaded: false,
+         synced: false,
+         workspaces: [],
+         tasks: []
+      });
+
+      // Take model data after we've synced
+      window.asanaModel.waitForSync()
+      .then(() => {
+         console.log('success!');
+
+         this.setState({
+            loaded: true,
+            synced: true,
+            workspaces: this.formatWorkspaces(),
+            tasks: this.filterTasks()
+         });
+      });
+
    }
 
    handleWorkspaceSelect(event) {
@@ -111,19 +144,10 @@ class Extension extends React.Component {
 
    componentDidMount() {
       console.log('mounting');
-      // Take model data after we've synced
-      window.asanaModel.waitForSync()
-      .then(() => {
-         console.log('success!');
-
-         this.setState({
-            loaded: true,
-            synced: true,
-            workspaces: this.formatWorkspaces(),
-            tasks: this.filterTasks()
-         });
-      });
+      this.refresh();
    }
+   // Zero state data
+
 
    render() {
 
@@ -132,7 +156,7 @@ class Extension extends React.Component {
 
       if (this.state.loaded && this.state.synced) {
          extensionContents = <div className="extension">
-            <Header handleWorkspaceSelect={this.handleWorkspaceSelect} handleDateChange={this.handleDateChange} workspaces={this.state.workspaces} />
+            <Header handleWorkspaceSelect={this.handleWorkspaceSelect} handleDateChange={this.handleDateChange} handleSync={this.handleSync} workspaces={this.state.workspaces} />
             <TaskList tasks={this.state.tasks} />
          </div>;
       } else if (this.state.loaded) {
@@ -181,6 +205,8 @@ class Header extends React.Component {
                />
                Today's tasks only
             </label>
+
+            <img src="images/sync.svg" className="sync" onClick={this.props.handleSync} />
          </form>
       );
    }

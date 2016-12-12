@@ -23,10 +23,11 @@ These notes were written for myself while developing. Might be using a lot of my
 - [x] CSS option and popup
 - [x] Identify minimal state rep
 - [x] Identify state location
-- [ ] Manual syncing
+- [x] Manual syncing
 - [ ] Task completion
 - [x] Task due at date
 - [ ] Assignee
+- [ ] Do something with sections
 - [ ] Task tags
 - [ ] Handle multiproject tasks
 - [ ] Handle long task names
