@@ -27,7 +27,7 @@ These notes were written for myself while developing. Might be using a lot of my
 - [x] Task completion
 - [x] Task due at date
 - [ ] Assignee
-- [ ] Do something with sections
+- [x] Do something with sections
 - [ ] Task tags
 - [ ] Handle multiproject tasks
 - [ ] Handle long task names
