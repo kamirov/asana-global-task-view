@@ -71,6 +71,12 @@ gulp.task('images', () =>
       .pipe(gulp.dest(`${config.dstPath}/images`))
 );
 
+// General fonts
+gulp.task('fonts', () =>
+   gulp.src(`${config.srcPath}/fonts/*`)
+      .pipe(gulp.dest(`${config.dstPath}/fonts`))
+);
+
 
 // HTML tasks
 gulp.task("html", () =>
@@ -95,12 +101,13 @@ gulp.task("styles", () =>
 
 
 // All tasks
-gulp.task("default", ["scripts", "styles", "images", "html"]);
+gulp.task("default", ["scripts", "styles", "images", "fonts", "html"]);
 
 // Watcher
 gulp.task("watch", ["default"], () => {
    gulp.watch(`${config.srcPath}/*.html`, ["html"]);
    gulp.watch(`${config.srcPath}/images/*`, ["images"]);
+   gulp.watch(`${config.srcPath}/fonts/*`, ["fonts"]);
    gulp.watch(`${config.srcPath}/scripts/*.js`, ["scripts"]);
    gulp.watch(`${config.srcPath}/styles/*.scss`, ["styles"]);
 });

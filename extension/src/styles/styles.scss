@@ -1,3 +1,14 @@
+// Imports and fonts
+@font-face {
+   font-family: Montserrat;
+   src: url("../fonts/Montserrat-Light.otf") format("opentype");
+}
+@font-face {
+   font-family: Montserrat;
+   font-weight: bold;
+   src: url("../fonts/Montserrat-Regular.otf") format("opentype");
+}
+
 // SEC_GLOBAL
 
 .truncate {
@@ -11,7 +22,7 @@
 
 #popup-root {
    min-width: 550px;
-   font-family: "proxima-nova", "Helvetica Neue", "Helvetica", Arial, sans-serif;
+   font-family: "Montserrat", "proxima-nova", "Helvetica Neue", "Helvetica", Arial, sans-serif;
 
    .extension {
       .header {
@@ -21,6 +32,7 @@
          align-items: baseline;
          
          .workspace-select {
+            font-family: "Montserrat", "proxima-nova", "Helvetica Neue", "Helvetica", Arial, sans-serif;
             cursor: pointer;
             border: none;
             font-weight: bold;
