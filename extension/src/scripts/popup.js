@@ -245,37 +245,39 @@ class TaskList extends React.Component {
 class Task extends React.Component {
    constructor(props) {
       super(props);
-      this.state = { 
+      this.state = {
+         extraClasses: "",
+         completed: false,
       };
 
       this.completeTask = this.completeTask.bind(this);
    }
 
    completeTask(event) {
-      window.asanaModel.completeTask(this.props.taskId);      
-      console.log(event, this.props);
+      if (!this.state.completed) {
+         window.asanaModel.completeTask(this.props.taskId);
+         this.setState({
+            completed: true,
+            extraClasses: "completed"
+         })
+         console.log(event, this.props);
+      }
    }
 
    render() {
       return (
-         <ReactCSSTransitionGroup
-            transitionName="task"
-            transitionAppear={false}
-            transitionAppearTimeout={500}
-            transitionEnter={false}
-            transitionLeave={true}>
-            <div className="task" onClick={this.completeTask}>
-               <div className="check-and-name">
-                  <div className="check">
-                     <svg viewBox="0 0 32 32">
-                        <polygon points="27.672,4.786 10.901,21.557 4.328,14.984 1.5,17.812 10.901,27.214 30.5,7.615 "></polygon>
-                     </svg>
-                  </div>
-                  <span className="name">{this.props.taskName}</span>
+         <div
+            className={`task ${this.state.extraClasses}`} onClick={this.completeTask}>
+            <div className="check-and-name">
+               <div className="check">
+                  <svg viewBox="0 0 32 32">
+                     <polygon points="27.672,4.786 10.901,21.557 4.328,14.984 1.5,17.812 10.901,27.214 30.5,7.615 "></polygon>
+                  </svg>
                </div>
-               <TaskInfo project={this.props.project} workspace={this.props.workspace} />
+               <span className="name">{this.props.taskName}</span>
             </div>
-         </ReactCSSTransitionGroup>
+            <TaskInfo project={this.props.project} workspace={this.props.workspace} />
+         </div>
       );
    }
 }

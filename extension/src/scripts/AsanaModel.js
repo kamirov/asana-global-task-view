@@ -40,10 +40,26 @@ export default class Asana_model {
 
 
    completeTask(taskId) {
+
+      // Remove the task from all workspaces
+      for (let workspaceKey in this.items) {
+         let tasks = this.items[workspaceKey].tasks;
+
+         // Find the item index in the workspace's list of tasks and remove it
+         for(let k = 0; k < tasks.length; k++) {
+            if (tasks[k].id === taskId) {
+               this.items[workspaceKey].tasks.splice(k, 1);
+               break;
+            }
+         }
+      }
+
+      // Remove it from Asana
       return new Promise((resolve, reject) => {
          this.client.tasks.update(taskId, {
             completed: true
          }).then((response) => {
+
             chrome.extension.getBackgroundPage().console.log(taskId, response);
             resolve();
          }).catch((error) => {
