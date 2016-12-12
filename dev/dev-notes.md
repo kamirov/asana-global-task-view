@@ -25,7 +25,7 @@ These notes were written for myself while developing. Might be using a lot of my
 - [x] Identify state location
 - [ ] Manual syncing
 - [ ] Task completion
-- [ ] Task due at date
+- [x] Task due at date
 - [ ] Assignee
 - [ ] Task tags
 - [ ] Handle multiproject tasks
