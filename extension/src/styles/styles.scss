@@ -91,14 +91,14 @@
                .name {
 
                }
+
             }   
 
             .task-info {
-
                .pill {
                   @extend .truncate;
                   background: #f8f8f9;
-                  border-color: 1px solid #e1e2e4;
+                  border: 1px solid #e1e2e4;
                   color: #676d76;
                   font-size: 0.7rem;
                   font-weight: bold;
@@ -115,6 +115,25 @@
 
                .project {
                   
+               }
+            }
+
+            &.section {
+               font-size: 1rem;
+               font-weight: 600;
+               line-height: 1rem;
+               align-items: flex-end;
+               padding: 0.95rem 0 0.35rem;
+
+               .check-and-name {
+                  .check {
+                     display: none;
+
+                  }
+               }
+
+               .task-info {
+                  display: none;
                }
             }
 

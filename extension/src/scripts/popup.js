@@ -224,9 +224,12 @@ class TaskList extends React.Component {
 
    render() {
 
+      console.log("rendering tasklist");
+
       // Make task list
       let tasks = [];
       this.props.tasks.forEach((task) => {
+      
 
          tasks.push(
             <Task taskId={task.id} taskName={task.name} project={task.project} workspace={task.workspace} />
@@ -246,7 +249,7 @@ class Task extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
-         extraClasses: "",
+         extraClasses: [],
          completed: false,
       };
 
@@ -258,16 +261,26 @@ class Task extends React.Component {
          window.asanaModel.completeTask(this.props.taskId);
          this.setState({
             completed: true,
-            extraClasses: "completed"
+            extraClasses: ["completed"]
          })
          console.log(event, this.props);
       }
    }
 
    render() {
+
+      console.log("rendering task");
+
+      // Should we move this to TaskList? (I don't think so)
+      let extraClasses = this.state.extraClasses.slice();
+      if (this.props.taskName.endsWith(":"))
+         extraClasses.push("section");
+      console.log(this.state.extraClasses)
+         
+
       return (
          <div
-            className={`task ${this.state.extraClasses}`} onClick={this.completeTask}>
+            className={`task ${extraClasses.join(" ")}`} onClick={this.completeTask}>
             <div className="check-and-name">
                <div className="check">
                   <svg viewBox="0 0 32 32">
@@ -297,11 +310,11 @@ class TaskInfo extends React.Component {
          <div className="task-info pill-container">
             {
                !localStorage.getItem("currentWorkspace") && 
-                  <span className="pill workspace">
+                  <span className="pill workspace" title={this.props.workspace}>
                      {this.props.workspace}
                   </span>
             }
-            <span className="pill project">
+            <span className="pill project" title={this.props.project}>
                {this.props.project}
             </span>
          </div>
