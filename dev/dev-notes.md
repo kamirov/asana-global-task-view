@@ -24,7 +24,7 @@ These notes were written for myself while developing. Might be using a lot of my
 - [x] Identify minimal state rep
 - [x] Identify state location
 - [x] Manual syncing
-- [ ] Task completion
+- [x] Task completion
 - [x] Task due at date
 - [ ] Assignee
 - [ ] Do something with sections
