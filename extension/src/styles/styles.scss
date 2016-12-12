@@ -124,3 +124,13 @@
       }
    }
 }
+
+
+.task-appear {
+  opacity: 0.01;
+}
+
+.task-appear.task-appear-active {
+  opacity: 1;
+  transition: opacity .5s ease-in;
+}

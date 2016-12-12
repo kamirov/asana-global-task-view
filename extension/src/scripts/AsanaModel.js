@@ -38,12 +38,28 @@ export default class Asana_model {
       this.status = STATUS.DEFAULT;
    }
 
+
+   completeTask(taskId) {
+      return new Promise((resolve, reject) => {
+         this.client.tasks.update(taskId, {
+            completed: true
+         }).then((response) => {
+            chrome.extension.getBackgroundPage().console.log(taskId, response);
+            resolve();
+         }).catch((error) => {
+            chrome.extension.getBackgroundPage().console.log(error);
+            reject();
+         });
+      });
+   }
+   
+
    /**
-    * Gets user's personal and workspace data. Updates personal data directly, returns workspace data to be processed.
+    * Gets user's personal and workspace data. Gets personal data directly, returns workspace data to be processed.
     * @return {Promise} Promise containing workspace data
     */
-   updateUser() {
-      chrome.extension.getBackgroundPage().console.log("updateUser");
+   getUser() {
+      chrome.extension.getBackgroundPage().console.log("getUser");
 
       return new Promise((resolve, reject) => {
 
@@ -88,8 +104,8 @@ export default class Asana_model {
    }
 
 
-   updateProjects() {
-      chrome.extension.getBackgroundPage().console.log("updateProjects");
+   getProjects() {
+      chrome.extension.getBackgroundPage().console.log("getProjects");
 
       return new Promise((resolve, reject) => {
 
@@ -122,8 +138,8 @@ export default class Asana_model {
    }
 
 
-   updateTasks() {
-      chrome.extension.getBackgroundPage().console.log("updateTasks");
+   getTasks() {
+      chrome.extension.getBackgroundPage().console.log("getTasks");
       return new Promise((resolve, reject) => {
 
          let currentIdx = 0;
@@ -171,7 +187,7 @@ export default class Asana_model {
 
 
    /**
-    * Resets, then updates all Asana state properties.
+    * Resets, then gets all Asana state properties.
     * @return {Promise}
     */
    sync() {
@@ -193,10 +209,10 @@ export default class Asana_model {
 
          chrome.extension.getBackgroundPage().console.log("chain_start");
 
-         // Update state
-         this.updateUser()
-         .then((workspaces) => this.updateProjects(workspaces))
-         .then((projects) => this.updateTasks(projects))
+         // Get state
+         this.getUser()
+         .then((workspaces) => this.getProjects(workspaces))
+         .then((projects) => this.getTasks(projects))
          .then(() => {
             chrome.extension.getBackgroundPage().console.log("success");
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 window.background = chrome.extension.getBackgroundPage();
 window.asanaModel = window.background.asanaModel;
@@ -233,9 +234,9 @@ class TaskList extends React.Component {
       });
       
       console.log("tasks", this.props.tasks, tasks);
-
+      console.log("Here");
       return (
-         <div className="task-list">{tasks}</div>
+            <div className="task-list">{tasks}</div>
       );
    }
 }
@@ -246,21 +247,35 @@ class Task extends React.Component {
       super(props);
       this.state = { 
       };
+
+      this.completeTask = this.completeTask.bind(this);
+   }
+
+   completeTask(event) {
+      window.asanaModel.completeTask(this.props.taskId);      
+      console.log(event, this.props);
    }
 
    render() {
       return (
-         <div className="task">
-            <div className="check-and-name">
-               <div className="check">
-                  <svg viewBox="0 0 32 32">
-                     <polygon points="27.672,4.786 10.901,21.557 4.328,14.984 1.5,17.812 10.901,27.214 30.5,7.615 "></polygon>
-                  </svg>
+         <ReactCSSTransitionGroup
+            transitionName="task"
+            transitionAppear={false}
+            transitionAppearTimeout={500}
+            transitionEnter={false}
+            transitionLeave={true}>
+            <div className="task" onClick={this.completeTask}>
+               <div className="check-and-name">
+                  <div className="check">
+                     <svg viewBox="0 0 32 32">
+                        <polygon points="27.672,4.786 10.901,21.557 4.328,14.984 1.5,17.812 10.901,27.214 30.5,7.615 "></polygon>
+                     </svg>
+                  </div>
+                  <span className="name">{this.props.taskName}</span>
                </div>
-               <span className="name">{this.props.taskName}</span>
+               <TaskInfo project={this.props.project} workspace={this.props.workspace} />
             </div>
-            <TaskInfo project={this.props.project} workspace={this.props.workspace} />
-         </div>
+         </ReactCSSTransitionGroup>
       );
    }
 }
