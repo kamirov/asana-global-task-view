@@ -33,6 +33,7 @@ These notes were written for myself while developing. Might be using a lot of my
 - [ ] Get proxima nova font
 - [ ] Handle no-project tasks
 - [ ] Handle subtasks
+- [ ] Ignore blank tasks
 
 ## Process Chain
 - Asana-related state stored as struct
@@ -177,3 +178,21 @@ Output:
   "next_page": null
 }
 ```
+
+### Tech
+
+ES6
+Babel
+Gulp
+Browserify
+SASS
+HTML5
+CSS3
+localStorage
+React.JS
+REST API
+Chrome Extension
+npm
+mocha
+eslint
+photoshop

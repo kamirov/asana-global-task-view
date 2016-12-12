@@ -75,7 +75,7 @@ export default class Asana_model {
          }, err => {
             // How did the res fail?
             if (err.status === 401)
-               if (localStorage.accessToken)
+               if (localStorage.getItem("accessToken"))
                   this.status = STATUS.BAD_TOKEN;
                else
                   this.status = STATUS.NO_TOKEN;            
@@ -203,7 +203,7 @@ export default class Asana_model {
             // Some last minute fixes
             
             // Remove locally cached values if they are no longer valid
-            if (!this.items[localStorage.currentWorkspace])
+            if (!this.items[localStorage.getItem("currentWorkspace")])
                localStorage.removeItem('currentWorkspace');
             
 

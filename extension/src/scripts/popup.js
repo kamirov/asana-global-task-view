@@ -19,7 +19,7 @@ class Extension extends React.Component {
    }
 
    handleWorkspaceSelect(event) {
-      localStorage.currentWorkspace = event.target.value;
+      localStorage.setItem("currentWorkspace", event.target.value);
 
       this.setState({
          tasks: this.filterTasks()
@@ -27,11 +27,10 @@ class Extension extends React.Component {
    }
 
    handleDateChange(event) {
-      localStorage.dueToday = event.target.checked;
-         
-         console.log(event)
-         console.log(localStorage);
-         console.log(this.state);
+      if (event.target.checked)
+         localStorage.setItem("dueToday", "true");
+      else
+         localStorage.removeItem("dueToday");
       this.setState({
          tasks: this.filterTasks()
       });
@@ -57,10 +56,12 @@ class Extension extends React.Component {
 
       console.log("filtering tasks");
 
+      let currentWorkspace = localStorage.getItem("currentWorkspace");
+
       // Filter by workspace
-      if (localStorage.currentWorkspace) {
-         console.log(`getting only workspace's tasks (${localStorage.currentWorkspace})`)
-         tasks = window.asanaModel.items[localStorage.currentWorkspace].tasks;
+      if (currentWorkspace) {
+         console.log(`getting only workspace's tasks (${currentWorkspace})`)
+         tasks = window.asanaModel.items[currentWorkspace].tasks;
       } else { // We're returning all workspace tasks
          console.log(`getting all workspace tasks`)
          for (let workspaceId in window.asanaModel.items) {
@@ -79,7 +80,7 @@ class Extension extends React.Component {
       console.log(tasks);
 
       // Filter by date
-      if (localStorage.dueToday) {
+      if (localStorage.getItem("dueToday")) {
          let today = new Date();
          today.setHours(0, 0, 0, 0);
 
@@ -172,10 +173,10 @@ class Header extends React.Component {
 
       return (
          <form className="header">
-            <select value={localStorage.currentWorkspace} onChange={this.props.handleWorkspaceSelect} className="workspace-select">{workspaces}</select>
+            <select value={localStorage.getItem("currentWorkspace")} onChange={this.props.handleWorkspaceSelect} className="workspace-select">{workspaces}</select>
 
             <label className="dateCheckbox">
-               <input type="checkbox" checked={localStorage.dueToday}
+               <input type="checkbox" checked={localStorage.getItem("dueToday")}
                   onChange={this.props.handleDateChange}
                />
                Today's tasks only
@@ -252,7 +253,7 @@ class TaskInfo extends React.Component {
       return (
          <div className="task-info pill-container">
             {
-               !localStorage.currentWorkspace && 
+               !localStorage.getItem("currentWorkspace") && 
                   <span className="pill workspace">
                      {this.props.workspace}
                   </span>
