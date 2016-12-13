@@ -33,7 +33,8 @@ These notes were written for myself while developing. Might be using a lot of my
 - [x] Ignore blank tasks
 - [x] New icon
 - [x] Undo complete notification
-- [ ] Give option to show all tasks or all assigned to a person
+- [x] Give option to show all tasks or all assigned to a person
+- [ ] Style options page
 - [ ] Nicer syncing screen
 - [ ] Confirm we fail gracefully
 - [ ] Add a "Go here for your personal access token"
