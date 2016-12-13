@@ -180,14 +180,17 @@ export default class Asana_model {
 
                   chrome.extension.getBackgroundPage().console.log("res.data", res.data);
                   res.data.forEach(task => {
-                     this.items[workspaceKey].tasks.push({
-                        id: task.id,
-                        name: task.name,
-                        dueAt: task.due_at,
-                        dueOn: task.due_on,
-                        project: project.name,
-                        workspace: workspace.name
-                     });
+                     // Ignore blank tasks
+                     if (task.name) {
+                        this.items[workspaceKey].tasks.push({
+                           id: task.id,
+                           name: task.name,
+                           dueAt: task.due_at,
+                           dueOn: task.due_on,
+                           project: project.name,
+                           workspace: workspace.name
+                        });
+                     }
                   });
 
                   if (currentIdx === numIndices) {
