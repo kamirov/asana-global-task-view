@@ -36,8 +36,8 @@ These notes were written for myself while developing. Might be using a lot of my
 - [x] Give option to show all tasks or all assigned to a person
 - [x] Style options page
 - [x] Nicer syncing screen
+- [x] Add a "Go here for your personal access token"
 - [ ] Confirm we fail gracefully
-- [ ] Add a "Go here for your personal access token"
 - [ ] Finish documentation
 - [ ] Figure out submission to web store, then do it
 

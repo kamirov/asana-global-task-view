@@ -20,6 +20,9 @@ class Extension extends React.Component {
          tasks: []
       };
 
+      this.syncing = false;
+      this.syncInterval = null;
+
       this.handleSync = this.handleSync.bind(this);
       this.handleWorkspaceSelect = this.handleWorkspaceSelect.bind(this);
       this.handleDateChange = this.handleDateChange.bind(this);
@@ -41,6 +44,18 @@ class Extension extends React.Component {
       this.refresh();
    }
 
+   checkForSync() {
+      console.log("checking for sync");
+      if (window.asanaModel.status === window.asanaModel.allStatuses.SYNC_IN_PROGRESS) {
+         console.log("sync in progress");
+         if (!this.syncing) {
+            console.log("switching sync to true");
+            this.syncing = true;
+            this.refresh();
+         }
+      }
+   }
+
    refresh() {
 
       this.setState({
@@ -52,6 +67,8 @@ class Extension extends React.Component {
       window.asanaModel.waitForSync()
       .then(() => {
          console.log('success!');
+
+         this.syncing = false;
 
          this.setState({
             loaded: true,
@@ -155,8 +172,10 @@ class Extension extends React.Component {
 
 
    componentDidMount() {
-      console.log('mounting');
       this.refresh();
+      this.syncInterval = setInterval(() => {
+         this.checkForSync();
+      }, 1000);
    }
 
    render() {
@@ -171,8 +190,6 @@ class Extension extends React.Component {
          syncStatus = window.asanaModel.allStatuses.SYNC_ERROR;   
       else
          syncStatus = window.asanaModel.allStatuses.SYNC_IN_PROGRESS;   
-
-
 
       return (
          <div className="extension">
