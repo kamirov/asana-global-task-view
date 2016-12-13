@@ -37,7 +37,7 @@
             height: 1rem;
             width: 100%;
             padding: 0px 0px 0px 10px;
-            margin-top: 0.3rem;
+            margin-top: 0.5rem;
             border: 1px solid #E5E5E5;
             outline: 0;
             box-shadow: inset 1px 1px 2px rgba(238, 238, 238, 0.2);
@@ -60,7 +60,7 @@
 
    .extension {
       .header {
-         margin: 1rem 0;
+         margin: 0 0 1rem;
          display: flex;
          justify-content: space-between;
          align-items: baseline;

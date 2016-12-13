@@ -42,13 +42,10 @@ class Extension extends React.Component {
    }
 
    refresh() {
-      
-      // Zero state data
+
       this.setState({
          loaded: false,
          synced: false,
-         workspaces: [],
-         tasks: []
       });
 
       // Take model data after we've synced
@@ -199,11 +196,15 @@ class Header extends React.Component {
    render() {
       
       // Make workspace options list
-      let workspaces = [];
-      workspaces.push(<option value="">All Workspaces</option>);
-      this.props.workspaces.forEach((workspace) => {
-         workspaces.push(<option value={workspace.id}>{workspace.name}</option>);
-      });
+      let workspaceSelect = <div></div>;
+      if (this.props.workspaces.length) {
+         let workspaces = [];
+         workspaces.push(<option value="">All Workspaces</option>);
+         this.props.workspaces.forEach((workspace) => {
+            workspaces.push(<option value={workspace.id}>{workspace.name}</option>);
+         });
+         workspaceSelect = <select tabIndex={nextTabIndex()} value={localStorage.getItem("currentWorkspace")} onChange={this.props.handleWorkspaceSelect} className="workspace-select">{workspaces}</select>;
+      }
 
       console.log(this.props);
 
@@ -214,7 +215,8 @@ class Header extends React.Component {
 
       return (
          <form className="header">
-            <select tabIndex={nextTabIndex()} value={localStorage.getItem("currentWorkspace")} onChange={this.props.handleWorkspaceSelect} className="workspace-select">{workspaces}</select>
+         
+            {workspaceSelect}
 
             <label className="date-checkbox">
                <input tabIndex={nextTabIndex()} type="checkbox" checked={localStorage.getItem("dueToday")}

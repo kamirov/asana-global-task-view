@@ -54,7 +54,7 @@ class OptionsForm extends React.Component {
       return (
          <form className="smart-green" onSubmit={this.handleSubmit}>
             <label>
-               Personal Access Token:
+               Personal Access Token (<a href="https://app.asana.com/-/account_api" target="_blank">create a new one</a>):
               <input type="text" placeholder="" value={this.state.accessToken} onChange={this.handleTokenChange} />
             </label>
 

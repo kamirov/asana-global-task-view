@@ -35,7 +35,7 @@ These notes were written for myself while developing. Might be using a lot of my
 - [x] Undo complete notification
 - [x] Give option to show all tasks or all assigned to a person
 - [x] Style options page
-- [ ] Nicer syncing screen
+- [x] Nicer syncing screen
 - [ ] Confirm we fail gracefully
 - [ ] Add a "Go here for your personal access token"
 - [ ] Finish documentation
