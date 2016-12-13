@@ -217,7 +217,7 @@ class Header extends React.Component {
                Today's tasks only
             </label>
 
-            <img tabIndex={nextTabIndex()} src="images/sync.svg" className={syncClasses.join(" ")} onClick={this.props.handleSync} />
+            <img tabIndex={nextTabIndex()} src="images/sync.svg" className={syncClasses.join(" ")} onClick={this.props.handleSync} onKeyPress={this.props.handleSync} />
          </form>
       );
    }
