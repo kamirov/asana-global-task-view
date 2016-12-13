@@ -31,6 +31,15 @@ class Extension extends React.Component {
    handleSync(event) {
       console.log('handleSync');
 
+      // Clear any notifications
+      chrome.notifications.getAll((notifications) => {
+         let notificationIds = Object.keys(notifications);
+
+         notificationIds.forEach((notificationId) => {
+            chrome.notifications.clear(notificationId);
+         });
+      });
+
       window.asanaModel.sync();
       this.refresh();
    }
