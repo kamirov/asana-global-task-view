@@ -185,28 +185,41 @@ export default class Asana_model {
             chrome.extension.getBackgroundPage().console.log("workspace.projects", workspace.projects);
             workspace.projects.forEach(project => {
 
-               // chrome.extension.getBackgroundPage().console.log(project);
+               chrome.extension.getBackgroundPage().console.log((localStorage.getItem("onlyGetUsersTasks") ? this.user.id : null));
 
                // Get list of tasks in each project
                this.client.tasks.findByProject(project.id, {
                   completed_since: 'now',
+                  // assignee: (localStorage.getItem("includeUnassigned") ? this.user.id : null),
                   opt_fields: 'name,id,due_on,due_at,assignee'
                }).then(res => {
                   currentIdx++;
                   chrome.extension.getBackgroundPage().console.log(res);
                   chrome.extension.getBackgroundPage().console.log("res.data", res.data);
                   res.data.forEach(task => {
+
                      // Ignore blank tasks
-                     if (task.name) {
-                        this.items[workspaceKey].tasks.push({
-                           id: task.id,
-                           name: task.name,
-                           dueAt: task.due_at,
-                           dueOn: task.due_on,
-                           project: project.name,
-                           workspace: workspace.name
-                        });
-                     }
+                     if (!task.name) 
+                        return;
+                     
+                     //    If we're only interested in tasks assigned to a specific user, then filter for those here
+                     if (localStorage.getItem("includeUnassigned")) {
+                        // Does the task have an owner? Is it the logged in user?
+                        if (task.assignee === null
+                            || task.assignee.id !== this.user.id )
+                            return;
+                     }  
+
+                     this.items[workspaceKey].tasks.push({
+                        id: task.id,
+                        name: task.name,
+                        dueAt: task.due_at,
+                        dueOn: task.due_on,
+                        project: project.name,
+                        workspace: workspace.name
+                     });
+
+
                   });
 
                   if (currentIdx === numIndices) {
