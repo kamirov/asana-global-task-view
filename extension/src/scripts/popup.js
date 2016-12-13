@@ -5,6 +5,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 window.background = chrome.extension.getBackgroundPage();
 window.asanaModel = window.background.asanaModel;
 
+window.chrome_notification_listener_set = false;
+
 // Utility function
 window.tabIndex = 0;
 function nextTabIndex() {
@@ -153,8 +155,6 @@ class Extension extends React.Component {
       console.log('mounting');
       this.refresh();
    }
-   // Zero state data
-
 
    render() {
 
@@ -230,6 +230,20 @@ class TaskList extends React.Component {
       this.state = {
          tasks: null
       };
+    
+      this.uncomplete = this.uncomplete.bind(this);
+   }
+
+
+   uncomplete(notificationId, buttonIndex) {
+      chrome.notifications.clear(notificationId);
+      
+      this.refs[notificationId].uncomplete();
+   }
+
+
+   componentDidMount() {
+      chrome.notifications.onButtonClicked.addListener(this.uncomplete);
    }
 
    render() {
@@ -242,7 +256,7 @@ class TaskList extends React.Component {
       
 
          tasks.push(
-            <Task taskId={task.id} taskName={task.name} project={task.project} workspace={task.workspace} />
+            <Task ref={task.id} taskId={task.id} taskName={task.name} project={task.project} workspace={task.workspace} />
          );
       });
       
@@ -263,10 +277,24 @@ class Task extends React.Component {
          completed: false,
       };
 
-      this.completeTask = this.completeTask.bind(this);
+      this.complete = this.complete.bind(this);
+      this.uncomplete = this.uncomplete.bind(this);
    }
 
-   completeTask(event) {
+
+   uncomplete() {
+      console.log(`Undoing ${this.props.taskId}`)
+
+      window.asanaModel.uncompleteTask(this.props.taskId);
+      
+      this.setState({
+         completed: false,
+         extraClasses: []
+      })
+   }
+
+
+   complete(event) {
       console.log(event, event.target);
 
       // We can complete either with a click, enter, or space. If this was a keypress, let's make sure it was a space or enter key
@@ -282,6 +310,22 @@ class Task extends React.Component {
             completed: true,
             extraClasses: ["completed"]
          })
+
+         var notificationOptions = {
+            type: "list",
+            title: "Task completed",
+            message: "",
+            items: [{ 
+               title: `${this.props.taskName}`, 
+               message: `${this.props.workspace}, ${this.props.project}`
+            }],
+            buttons: [{
+               "title": "Undo"
+            }],
+            iconUrl: "images/icon-32.png",
+         }
+         chrome.notifications.create(this.props.taskId.toString(), notificationOptions);
+
          console.log(event, this.props);
       }
    }
@@ -299,7 +343,7 @@ class Task extends React.Component {
 
       return (
          <div tabIndex={nextTabIndex()}
-            className={`task ${extraClasses.join(" ")}`} onKeyPress={this.completeTask} onClick={this.completeTask}>
+            className={`task ${extraClasses.join(" ")}`} onKeyPress={this.complete} onClick={this.complete}>
             <div className="check-and-name">
                <div className="check">
                   <svg viewBox="0 0 32 32">

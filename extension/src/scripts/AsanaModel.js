@@ -68,6 +68,24 @@ export default class Asana_model {
          });
       });
    }
+
+
+   uncompleteTask(taskId) {
+
+      // Remove it from Asana
+      return new Promise((resolve, reject) => {
+         this.client.tasks.update(taskId, {
+            completed: false
+         }).then((response) => {
+
+            chrome.extension.getBackgroundPage().console.log(taskId, response);
+            resolve();
+         }).catch((error) => {
+            chrome.extension.getBackgroundPage().console.log(error);
+            reject();
+         });
+      });
+   }
    
 
    /**
@@ -176,8 +194,6 @@ export default class Asana_model {
                }).then(res => {
                   currentIdx++;
                   chrome.extension.getBackgroundPage().console.log(res);
-
-
                   chrome.extension.getBackgroundPage().console.log("res.data", res.data);
                   res.data.forEach(task => {
                      // Ignore blank tasks

@@ -32,7 +32,7 @@ These notes were written for myself while developing. Might be using a lot of my
 - [x] Keyboard navigation
 - [x] Ignore blank tasks
 - [x] New icon
-- [ ] Completed notification
+- [x] Undo complete notification
 - [ ] Assignee
 - [ ] Nicer syncing screen
 - [ ] Confirm we fail gracefully
