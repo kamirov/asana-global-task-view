@@ -203,7 +203,7 @@ export default class Asana_model {
                         return;
                      
                      //    If we're only interested in tasks assigned to a specific user, then filter for those here
-                     if (localStorage.getItem("includeUnassigned")) {
+                     if (!localStorage.getItem("includeUnassigned")) {
                         // Does the task have an owner? Is it the logged in user?
                         if (task.assignee === null
                             || task.assignee.id !== this.user.id )

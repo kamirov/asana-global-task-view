@@ -20,11 +20,35 @@
 
 // SEC_OPTIONS
 #options-root {
-    form {
+   font-family: "Montserrat", "proxima-nova", "Helvetica Neue", "Helvetica", Arial, sans-serif;
+
+    // .smart-green styles from https://www.sanwebe.com/2013/10/css-html-form-styles
+    .smart-green {
+        margin-left:auto;
+        margin-right:auto;
+
         label {
             display: block;
+            margin: 0px 0px 1rem;
         }
+    
+        input[type="text"] {
+            color: #555;
+            height: 1rem;
+            width: 100%;
+            padding: 0px 0px 0px 10px;
+            margin-top: 0.3rem;
+            border: 1px solid #E5E5E5;
+            outline: 0;
+            box-shadow: inset 1px 1px 2px rgba(238, 238, 238, 0.2);
+        }
+
+        input[type="checkbox"] {
+            margin-right: 0.75rem;
+        }
+
     }
+        
 }
 
 // SEC_POPUP
@@ -53,30 +77,52 @@
             }
          }
 
-         .tagged-cont {
+         .tagged-cont, .date-checkbox {
             display: none;
          }
          
          .sync {
-            transition: 0.2s;
-            width: 1.5rem;
-            cursor: pointer;
-            position: relative;
-            top: 7px;
-
-            &:hover {
-               transform: rotate(25deg);
-               opacity: 0.7;
+            span {
+               display: none;
+               cursor: default;
+            }
+            
+            img {
+                transition: 0.2s;
+                width: 1.5rem;
+                cursor: pointer;
+                position: relative;
+                top: 7px;
+                margin-left: 0.5rem;                
             }
 
-            &.active {   
-                animation: spin 500ms linear infinite;
-                @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-                @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-                @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+            &:hover {
+                img {
+                transform: rotate(25deg);
+                opacity: 0.7;
+                }
+            }
 
-                &:focus, &:active {
-                   outline: none;
+            &.active {
+                span {
+                    display: inline-block;
+                }
+
+                img {
+                    cursor: default;
+                    animation: spin 500ms linear infinite;
+                    @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+                    @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+                    @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+                    &:focus, &:active {
+                    outline: none;
+                    }
+                    &:hover {
+                        transform: none;
+                        opacity: 1;
+                    }
+
                 }
             }
          }

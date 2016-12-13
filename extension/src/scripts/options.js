@@ -1,24 +1,21 @@
-// import asana from "asana";
-
-// let client = asana.Client.create().useAccessToken("0/e3d4d097511d056b1d701e5916f7e6b6");
-
-// client.users.me().then(function(me) {
-//   console.log(me);
-// });
-
 import React from "react";
 import ReactDOM from "react-dom";
+
+window.background = chrome.extension.getBackgroundPage();
+window.asanaModel = window.background.asanaModel;
 
 class OptionsForm extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
          accessToken: localStorage.getItem("accessToken"),
-         includeUnassigned: localStorage.getItem("includeUnassigned") ? true : false
+         includeUnassigned: localStorage.getItem("includeUnassigned") ? true : false,
+         dueToday: localStorage.getItem("dueToday") ? true : false
       };
 
       this.handleTokenChange = this.handleTokenChange.bind(this);
       this.handleAssigneeChange = this.handleAssigneeChange.bind(this);
+      this.handleDueDateChange = this.handleDueDateChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
    }
 
@@ -30,6 +27,10 @@ class OptionsForm extends React.Component {
      this.setState({ includeUnassigned: event.target.checked });
    }
 
+   handleDueDateChange(event) {
+     this.setState({ dueToday: event.target.checked });
+   }
+
    handleSubmit(event) {
       localStorage.setItem("accessToken", this.state.accessToken);
 
@@ -38,12 +39,20 @@ class OptionsForm extends React.Component {
       else
          localStorage.removeItem("includeUnassigned");
 
+      if (this.state.dueToday)
+         localStorage.setItem("dueToday", "true");
+      else
+         localStorage.removeItem("dueToday");
+
+      window.asanaModel.sync();
+      window.close();
+
       event.preventDefault();
    }
 
    render() {
       return (
-         <form onSubmit={this.handleSubmit}>
+         <form className="smart-green" onSubmit={this.handleSubmit}>
             <label>
                Personal Access Token:
               <input type="text" placeholder="" value={this.state.accessToken} onChange={this.handleTokenChange} />
@@ -54,6 +63,13 @@ class OptionsForm extends React.Component {
                   onChange={this.handleAssigneeChange}
                />
                Include unassigned tasks
+            </label>
+
+            <label>
+               <input type="checkbox" checked={this.state.dueToday}
+                  onChange={this.handleDueDateChange}
+               />
+               Only show today's tasks
             </label>
 
 

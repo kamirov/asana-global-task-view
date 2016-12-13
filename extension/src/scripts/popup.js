@@ -1,11 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 window.background = chrome.extension.getBackgroundPage();
 window.asanaModel = window.background.asanaModel;
-
-window.chrome_notification_listener_set = false;
 
 // Utility function
 window.tabIndex = 0;
@@ -219,14 +216,17 @@ class Header extends React.Component {
          <form className="header">
             <select tabIndex={nextTabIndex()} value={localStorage.getItem("currentWorkspace")} onChange={this.props.handleWorkspaceSelect} className="workspace-select">{workspaces}</select>
 
-            <label className="dateCheckbox">
+            <label className="date-checkbox">
                <input tabIndex={nextTabIndex()} type="checkbox" checked={localStorage.getItem("dueToday")}
                   onChange={this.props.handleDateChange}
                />
                Today's tasks only
             </label>
 
-            <img tabIndex={nextTabIndex()} src="images/sync.svg" className={syncClasses.join(" ")} onClick={this.props.handleSync} onKeyPress={this.props.handleSync} />
+            <div className={syncClasses.join(" ")}>
+                  <span>Syncing...</span>
+                  <img tabIndex={nextTabIndex()} src="images/sync.svg" onClick={this.props.handleSync} onKeyPress={this.props.handleSync} />
+            </div>
          </form>
       );
    }
