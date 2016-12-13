@@ -31,7 +31,7 @@ These notes were written for myself while developing. Might be using a lot of my
 - [x] Get proxima nova font (or suitable alternative)
 - [x] Keyboard navigation
 - [x] Ignore blank tasks
-- [ ] New icon
+- [x] New icon
 - [ ] Completed notification
 - [ ] Assignee
 - [ ] Nicer syncing screen
