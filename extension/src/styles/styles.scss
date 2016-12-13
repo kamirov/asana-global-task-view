@@ -17,6 +17,16 @@
    text-overflow: ellipsis;
 }
 
+.link-like {
+   text-decoration: underline;
+   color: rgb(17, 85, 204);
+   cursor: pointer;
+
+   &:active {
+      color: #444;
+   }
+}
+
 
 // SEC_OPTIONS
 #options-root {

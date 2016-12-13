@@ -37,7 +37,7 @@ These notes were written for myself while developing. Might be using a lot of my
 - [x] Style options page
 - [x] Nicer syncing screen
 - [x] Add a "Go here for your personal access token"
-- [ ] Confirm we fail gracefully
+- [x] Confirm we fail gracefully
 - [ ] Finish documentation
 - [ ] Figure out submission to web store, then do it
 

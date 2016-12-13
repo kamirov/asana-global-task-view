@@ -76,6 +76,8 @@ class Extension extends React.Component {
             workspaces: this.formatWorkspaces(),
             tasks: this.filterTasks()
          });
+      }).catch((err) => {
+         console.error(err);
       });
 
    }
@@ -170,7 +172,6 @@ class Extension extends React.Component {
       return tasks;
    }
 
-
    componentDidMount() {
       this.refresh();
       this.syncInterval = setInterval(() => {
@@ -182,20 +183,12 @@ class Extension extends React.Component {
 
       let extensionContents;
       let className = "extension";
-      let syncStatus = false;
-
-      if (this.state.loaded && this.state.synced)
-         syncStatus = window.asanaModel.allStatuses.SYNC_SUCCESS;   
-      else if (this.state.loaded)
-         syncStatus = window.asanaModel.allStatuses.SYNC_ERROR;   
-      else
-         syncStatus = window.asanaModel.allStatuses.SYNC_IN_PROGRESS;   
 
       return (
          <div className="extension">
             <div className="extension">
-               <Header handleWorkspaceSelect={this.handleWorkspaceSelect} handleDateChange={this.handleDateChange} handleSync={this.handleSync} workspaces={this.state.workspaces} syncStatus={syncStatus} />
-               <TaskList tasks={this.state.tasks} syncStatus={syncStatus} />
+               <Header handleWorkspaceSelect={this.handleWorkspaceSelect} handleDateChange={this.handleDateChange} handleSync={this.handleSync} workspaces={this.state.workspaces} />
+               <TaskList tasks={this.state.tasks} />
             </div>
          </div>
       );
@@ -208,6 +201,11 @@ class Header extends React.Component {
       super(props);
       this.state = {
       };
+   }
+
+   openOptionsPage() {
+      
+      chrome.runtime.openOptionsPage();
    }
 
    render() {
@@ -223,17 +221,27 @@ class Header extends React.Component {
          workspaceSelect = <select tabIndex={nextTabIndex()} value={localStorage.getItem("currentWorkspace")} onChange={this.props.handleWorkspaceSelect} className="workspace-select">{workspaces}</select>;
       }
 
-      console.log(this.props);
+      // Sync error message
+      let syncErrorMessage = <div></div>;
+      if (window.asanaModel.status == window.asanaModel.allStatuses.SYNC_ERROR)
+         syncErrorMessage = <div className="sync-error-message">Problem syncing with Asana. Try again please.</div>;
+      else if (window.asanaModel.status == window.asanaModel.allStatuses.NO_TOKEN)
+         syncErrorMessage = <div className="sync-error-message"><span className="link-like" onClick={this.openOptionsPage}>Please enter a Personal Access Token.</span></div>;
+      else if (window.asanaModel.status == window.asanaModel.allStatuses.BAD_TOKEN)
+         syncErrorMessage = <div className="sync-error-message">Personal Access Token is incorrect. <span className="link-like" onClick={this.openOptionsPage}>Please confirm it.</span></div>;
+
+
 
       // Dependent classes
       let syncClasses = ["sync"];
-      if (this.props.syncStatus == window.asanaModel.allStatuses.SYNC_IN_PROGRESS)
+      if (window.asanaModel.status == window.asanaModel.allStatuses.SYNC_IN_PROGRESS)
          syncClasses.push("active");
 
       return (
          <form className="header">
          
             {workspaceSelect}
+            {syncErrorMessage}
 
             <label className="date-checkbox">
                <input tabIndex={nextTabIndex()} type="checkbox" checked={localStorage.getItem("dueToday")}

@@ -9,9 +9,8 @@ export default class Asana_model {
 
    /**
     * Creates an instance of Asana_model.
-    * @param {number} accessToken - Asana personal access token
     */
-   constructor(accessToken) {
+   constructor() {
 
       this.allStatuses = {
          DEFAULT: Symbol("No status information yet"),
@@ -21,8 +20,7 @@ export default class Asana_model {
          SYNC_ERROR: Symbol("Problem syncing with Asana's server."),
          SYNC_IN_PROGRESS: Symbol("Sync is currently in progress")
       };
-
-      this.client = asana.Client.create().useAccessToken(accessToken);
+      this.client = null;
       this.syncIntervalInitialized = false;
       this.sync();
    }
@@ -255,14 +253,12 @@ export default class Asana_model {
          this.refresh();
          this.status = this.allStatuses.SYNC_IN_PROGRESS;
 
-         chrome.extension.getBackgroundPage().console.log("chain_start");
-
          // Get state
+         this.client = asana.Client.create().useAccessToken(localStorage.getItem("accessToken"));
          this.getUser()
          .then((workspaces) => this.getProjects(workspaces))
          .then((projects) => this.getTasks(projects))
          .then(() => {
-            chrome.extension.getBackgroundPage().console.log("success");
 
             // Some last minute fixes
             
