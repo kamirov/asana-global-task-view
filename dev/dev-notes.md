@@ -30,12 +30,12 @@ These notes were written for myself while developing. Might be using a lot of my
 - [x] Handle long task names
 - [x] Get proxima nova font (or suitable alternative)
 - [x] Keyboard navigation
-- [ ] Confirm we fail gracefully
+- [x] Ignore blank tasks
+- [ ] New icon
 - [ ] Completed notification
 - [ ] Assignee
-- [ ] Ignore blank tasks
-- [ ] New icon
 - [ ] Nicer syncing screen
+- [ ] Confirm we fail gracefully
 - [ ] Add a "Go here for your personal access token"
 - [ ] Finish documentation
 - [ ] Figure out submission to web store, then do it
