@@ -29,7 +29,6 @@ class Extension extends React.Component {
    }
 
    handleSync(event) {
-      console.log('handleSync');
 
       // Clear any notifications
       chrome.notifications.getAll((notifications) => {
@@ -45,11 +44,8 @@ class Extension extends React.Component {
    }
 
    checkForSync() {
-      console.log("checking for sync");
       if (window.asanaModel.status === window.asanaModel.allStatuses.SYNC_IN_PROGRESS) {
-         console.log("sync in progress");
          if (!this.syncing) {
-            console.log("switching sync to true");
             this.syncing = true;
             this.refresh();
          }
@@ -66,7 +62,6 @@ class Extension extends React.Component {
       // Take model data after we've synced
       window.asanaModel.waitForSync()
       .then(() => {
-         console.log('success!');
 
          this.syncing = false;
 
@@ -101,7 +96,6 @@ class Extension extends React.Component {
    }
 
    formatWorkspaces() {
-      console.log("formatting workspaces");
       let workspaces = [];
       for(let workspaceId in window.asanaModel.items) {
          workspaces.push({
@@ -110,38 +104,26 @@ class Extension extends React.Component {
          });
       }
 
-      console.log("done formatting workspaces");
-
       return workspaces;
    }
 
    filterTasks() {
       let tasks = [];
 
-      console.log("filtering tasks");
 
       let currentWorkspace = localStorage.getItem("currentWorkspace");
 
       // Filter by workspace
       if (currentWorkspace) {
-         console.log(`getting only workspace's tasks (${currentWorkspace})`)
          tasks = window.asanaModel.items[currentWorkspace].tasks;
       } else { // We're returning all workspace tasks
-         console.log(`getting all workspace tasks`)
          for (let workspaceId in window.asanaModel.items) {
-
-            console.log(`for workspace ID ${workspaceId}`)
 
             if (window.asanaModel.items[workspaceId])
                tasks = [...tasks, ...window.asanaModel.items[workspaceId].tasks];
          }
 
       }  
-
-      
-      console.log("done filtering tasks by workspace");
-
-      console.log(tasks);
 
       // Filter by date
       if (localStorage.getItem("dueToday")) {
@@ -165,9 +147,6 @@ class Extension extends React.Component {
        });
        
       }
-
-      console.log("done filtering tasks by date");
-      console.log(tasks);
 
       return tasks;
    }
@@ -203,8 +182,7 @@ class Header extends React.Component {
       };
    }
 
-   openOptionsPage() {
-      
+   openOptionsPage() {  
       chrome.runtime.openOptionsPage();
    }
 
@@ -283,9 +261,6 @@ class TaskList extends React.Component {
    }
 
    render() {
-
-      console.log("rendering tasklist");
-
       // Make task list
       let tasks = [];
       this.props.tasks.forEach((task) => {
@@ -296,8 +271,6 @@ class TaskList extends React.Component {
          );
       });
       
-      console.log("tasks", this.props.tasks, tasks);
-      console.log("Here");
       return (
             <div className="task-list">{tasks}</div>
       );
@@ -319,8 +292,6 @@ class Task extends React.Component {
 
 
    uncomplete() {
-      console.log(`Undoing ${this.props.taskId}`)
-
       window.asanaModel.uncompleteTask(this.props.taskId);
       
       this.setState({
@@ -331,8 +302,6 @@ class Task extends React.Component {
 
 
    complete(event) {
-      console.log(event, event.target);
-
       // We can complete either with a click, enter, or space. If this was a keypress, let's make sure it was a space or enter key
       if (event.type === "keypress") {
          if (!(event.charCode === 32 || event.charCode === 13)) { // Space or Enter
@@ -345,7 +314,7 @@ class Task extends React.Component {
          this.setState({
             completed: true,
             extraClasses: ["completed"]
-         })
+         });
 
          var notificationOptions = {
             type: "list",
@@ -362,20 +331,15 @@ class Task extends React.Component {
          }
          chrome.notifications.create(this.props.taskId.toString(), notificationOptions);
 
-         console.log(event, this.props);
       }
    }
 
    render() {
 
-      console.log("rendering task");
-
       // Should we move this to TaskList? (I don't think so)
       let extraClasses = this.state.extraClasses.slice();
       if (this.props.taskName.endsWith(":"))
-         extraClasses.push("section");
-      console.log(this.state.extraClasses)
-         
+         extraClasses.push("section");         
 
       return (
          <div tabIndex={nextTabIndex()}
@@ -401,7 +365,6 @@ class TaskInfo extends React.Component {
       this.state = {
       };
 
-      console.log(this.props);
    }
 
    render() {

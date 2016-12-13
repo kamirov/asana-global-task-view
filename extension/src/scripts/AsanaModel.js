@@ -58,10 +58,8 @@ export default class Asana_model {
             completed: true
          }).then((response) => {
 
-            chrome.extension.getBackgroundPage().console.log(taskId, response);
             resolve();
          }).catch((error) => {
-            chrome.extension.getBackgroundPage().console.log(error);
             reject();
          });
       });
@@ -76,10 +74,8 @@ export default class Asana_model {
             completed: false
          }).then((response) => {
 
-            chrome.extension.getBackgroundPage().console.log(taskId, response);
             resolve();
          }).catch((error) => {
-            chrome.extension.getBackgroundPage().console.log(error);
             reject();
          });
       });
@@ -91,7 +87,6 @@ export default class Asana_model {
     * @return {Promise} Promise containing workspace data
     */
    getUser() {
-      chrome.extension.getBackgroundPage().console.log("getUser");
 
       return new Promise((resolve, reject) => {
 
@@ -107,7 +102,6 @@ export default class Asana_model {
             };
 
             // Add workspaces to state
-            chrome.extension.getBackgroundPage().console.log("res.workspaces", res.workspaces);
             res.workspaces.forEach(workspace => {
                // chrome.extension.getBackgroundPage().console.log(workspace);
                this.items[workspace.id] = {
@@ -137,7 +131,6 @@ export default class Asana_model {
 
 
    getProjects() {
-      chrome.extension.getBackgroundPage().console.log("getProjects");
 
       return new Promise((resolve, reject) => {
 
@@ -171,7 +164,6 @@ export default class Asana_model {
 
 
    getTasks() {
-      chrome.extension.getBackgroundPage().console.log("getTasks");
       return new Promise((resolve, reject) => {
 
          let currentIdx = 0;
@@ -180,10 +172,7 @@ export default class Asana_model {
          for (let workspaceKey in this.items) {
             let workspace = this.items[workspaceKey];
 
-            chrome.extension.getBackgroundPage().console.log("workspace.projects", workspace.projects);
             workspace.projects.forEach(project => {
-
-               chrome.extension.getBackgroundPage().console.log((localStorage.getItem("onlyGetUsersTasks") ? this.user.id : null));
 
                // Get list of tasks in each project
                this.client.tasks.findByProject(project.id, {
@@ -192,10 +181,8 @@ export default class Asana_model {
                   opt_fields: 'name,id,due_on,due_at,assignee'
                }).then(res => {
                   currentIdx++;
-                  chrome.extension.getBackgroundPage().console.log(res);
-                  chrome.extension.getBackgroundPage().console.log("res.data", res.data);
-                  res.data.forEach(task => {
 
+                  res.data.forEach(task => {
                      // Ignore blank tasks
                      if (!task.name) 
                         return;
@@ -272,7 +259,7 @@ export default class Asana_model {
             resolve();
          })
          .catch(reason => {
-            chrome.extension.getBackgroundPage().console.error(reason);
+            // chrome.extension.getBackgroundPage().console.error(reason);
             reject(reason);
          });         
       });
