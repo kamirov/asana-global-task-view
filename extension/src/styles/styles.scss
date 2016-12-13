@@ -22,6 +22,7 @@
 
 #popup-root {
    min-width: 550px;
+   line-height: 1.25rem;
    font-family: "Montserrat", "proxima-nova", "Helvetica Neue", "Helvetica", Arial, sans-serif;
 
    .extension {
@@ -58,13 +59,24 @@
                transform: rotate(25deg);
                opacity: 0.7;
             }
+
+            &.active {   
+                animation: spin 500ms linear infinite;
+                @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+                @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+                @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+                &:focus, &:active {
+                   outline: none;
+                }
+            }
          }
       }
 
       .task-list {
          .task {
             border-bottom: 1px solid #e1e2e4;
-            border-top: 2px solid transparent;
+            border-top: 1px solid transparent;
             font-size: 0.8rem;
             display: flex;
             align-content: center;
@@ -80,6 +92,9 @@
 
             .check-and-name {
                margin-left: 4px;
+               display: inline-flex;
+               align-content: center;
+               align-items: baseline;
 
                .check {
                   border: 1px solid #b9bcc0;
@@ -89,6 +104,8 @@
                   height: 1.1rem;
                   width: 1.1rem;
                   display: inline-flex;
+                  flex-grow: 0;
+                  flex-shrink: 0;
                   align-items: center;
                   justify-content: center;
                   margin-right: 10px;
@@ -107,12 +124,18 @@
             }   
 
             .task-info {
+               margin-left: 1rem;
+               display: inline-flex;
+               align-content: center;
+               align-items: baseline;
+               
                .pill {
                   @extend .truncate;
                   background: #f8f8f9;
                   border: 1px solid #e1e2e4;
                   color: #676d76;
                   font-size: 0.7rem;
+                  line-height: 0.7rem;
                   font-weight: bold;
                   border-radius: 8.5px;
                   padding: 5px 10px;

@@ -26,15 +26,27 @@ These notes were written for myself while developing. Might be using a lot of my
 - [x] Manual syncing
 - [x] Task completion
 - [x] Task due at date
-- [ ] Assignee
 - [x] Do something with sections
-- [ ] Task tags
-- [ ] Handle multiproject tasks
-- [ ] Handle long task names
-- [ ] Get proxima nova font
+- [x] Handle long task names
+- [x] Get proxima nova font (or suitable alternative)
+- [x] Keyboard navigation
+- [ ] Confirm we fail gracefully
+- [ ] Completed notification
+- [ ] Assignee
+- [ ] Ignore blank tasks
+- [ ] New icon
+- [ ] Nicer syncing screen
+- [ ] Add a "Go here for your personal access token"
+- [ ] Finish documentation
+- [ ] Figure out submission to web store, then do it
+
+### Post Launch
+- [ ] Undoability
 - [ ] Handle no-project tasks
 - [ ] Handle subtasks
-- [ ] Ignore blank tasks
+- [ ] Task tags
+- [ ] Handle multiproject tasks
+
 
 ## Process Chain
 - Asana-related state stored as struct

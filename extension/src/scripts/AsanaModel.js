@@ -1,15 +1,5 @@
 import asana from 'asana';
 
-const STATUS = {
-   DEFAULT: Symbol("No status information yet"),
-   NO_TOKEN: Symbol("No access token yet"),
-   BAD_TOKEN: Symbol("Incorrect access token"),
-   SYNC_SUCCESS: Symbol("Synced with Asana server. All data retrieved"),
-   SYNC_ERROR: Symbol("Problem syncing with Asana's server."),
-   SYNC_IN_PROGRESS: Symbol("Sync is currently in progress")
-};
-
-
 /**
  * Interfaces with the Asana REST API
  * @export
@@ -22,6 +12,16 @@ export default class Asana_model {
     * @param {number} accessToken - Asana personal access token
     */
    constructor(accessToken) {
+
+      this.allStatuses = {
+         DEFAULT: Symbol("No status information yet"),
+         NO_TOKEN: Symbol("No access token yet"),
+         BAD_TOKEN: Symbol("Incorrect access token"),
+         SYNC_SUCCESS: Symbol("Synced with Asana server. All data retrieved"),
+         SYNC_ERROR: Symbol("Problem syncing with Asana's server."),
+         SYNC_IN_PROGRESS: Symbol("Sync is currently in progress")
+      };
+
       this.client = asana.Client.create().useAccessToken(accessToken);
       this.syncIntervalInitialized = false;
       this.sync();
@@ -35,7 +35,7 @@ export default class Asana_model {
       this.items = {};
       this.tag = "";
       this.project_count = 0;
-      this.status = STATUS.DEFAULT;
+      this.status = this.allStatuses.DEFAULT;
    }
 
 
@@ -84,7 +84,7 @@ export default class Asana_model {
             
             // chrome.extension.getBackgroundPage().console.log(res);
 
-            this.status = STATUS.SYNC_IN_PROGRESS;
+            this.status = this.allStatuses.SYNC_IN_PROGRESS;
             this.user = {
                id: res.id,
                name: res.name
@@ -108,11 +108,11 @@ export default class Asana_model {
             // How did the res fail?
             if (err.status === 401)
                if (localStorage.getItem("accessToken"))
-                  this.status = STATUS.BAD_TOKEN;
+                  this.status = this.allStatuses.BAD_TOKEN;
                else
-                  this.status = STATUS.NO_TOKEN;            
+                  this.status = this.allStatuses.NO_TOKEN;            
             else
-               this.status = STATUS.SYNC_ERROR;
+               this.status = this.allStatuses.SYNC_ERROR;
 
             reject("Couldn't retrieve personal information");
          });
@@ -221,7 +221,7 @@ export default class Asana_model {
 
          // Reset state
          this.refresh();
-         this.status = STATUS.SYNC_IN_PROGRESS;
+         this.status = this.allStatuses.SYNC_IN_PROGRESS;
 
          chrome.extension.getBackgroundPage().console.log("chain_start");
 
@@ -239,7 +239,7 @@ export default class Asana_model {
                localStorage.removeItem('currentWorkspace');
             
 
-            this.status = STATUS.SYNC_SUCCESS;
+            this.status = this.allStatuses.SYNC_SUCCESS;
             // Is this how we should handle success?
             resolve();
          })
@@ -253,18 +253,18 @@ export default class Asana_model {
    waitForSync() {
       return new Promise((resolve, reject) => {
          // If we're syncing, then check back regularly until we're done
-         if (this.status === STATUS.SYNC_IN_PROGRESS) {
+         if (this.status === this.allStatuses.SYNC_IN_PROGRESS) {
             let interval = setInterval(() => {
-               if (this.status === STATUS.SYNC_SUCCESS) {
+               if (this.status === this.allStatuses.SYNC_SUCCESS) {
                   clearInterval(interval);
                   resolve();
                }
-               else if (this.status === STATUS.SYNC_ERROR) {
+               else if (this.status === this.allStatuses.SYNC_ERROR) {
                   clearInterval(interval);
                   reject();
                }
             }, 500);
-         } else if (this.status === STATUS.SYNC_SUCCESS) {
+         } else if (this.status === this.allStatuses.SYNC_SUCCESS) {
             resolve();
          } else {
             reject();
@@ -273,3 +273,5 @@ export default class Asana_model {
    }
 
 }
+
+// export {allStatuses, AsanaModel};

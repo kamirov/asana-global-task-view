@@ -5,6 +5,12 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 window.background = chrome.extension.getBackgroundPage();
 window.asanaModel = window.background.asanaModel;
 
+// Utility function
+window.tabIndex = 0;
+function nextTabIndex() {
+   return window.tabIndex++;
+}
+
 class Extension extends React.Component {
    constructor(props) {
       super(props);
@@ -154,25 +160,23 @@ class Extension extends React.Component {
 
       let extensionContents;
       let className = "extension";
+      let syncStatus = false;
 
-      if (this.state.loaded && this.state.synced) {
-         extensionContents = <div className="extension">
-            <Header handleWorkspaceSelect={this.handleWorkspaceSelect} handleDateChange={this.handleDateChange} handleSync={this.handleSync} workspaces={this.state.workspaces} />
-            <TaskList tasks={this.state.tasks} />
-         </div>;
-      } else if (this.state.loaded) {
-         extensionContents = <div className="extension">
-            <span>Error syncing...</span>
-         </div>;
-      } else {
-         extensionContents = <div className="extension">
-            <span>Loading...</span>
-         </div>;
-      }
+      if (this.state.loaded && this.state.synced)
+         syncStatus = window.asanaModel.allStatuses.SYNC_SUCCESS;   
+      else if (this.state.loaded)
+         syncStatus = window.asanaModel.allStatuses.SYNC_ERROR;   
+      else
+         syncStatus = window.asanaModel.allStatuses.SYNC_IN_PROGRESS;   
+
+
 
       return (
          <div className="extension">
-            {extensionContents}
+            <div className="extension">
+               <Header handleWorkspaceSelect={this.handleWorkspaceSelect} handleDateChange={this.handleDateChange} handleSync={this.handleSync} workspaces={this.state.workspaces} syncStatus={syncStatus} />
+               <TaskList tasks={this.state.tasks} syncStatus={syncStatus} />
+            </div>
          </div>
       );
    }
@@ -187,6 +191,7 @@ class Header extends React.Component {
    }
 
    render() {
+      
       // Make workspace options list
       let workspaces = [];
       workspaces.push(<option value="">All Workspaces</option>);
@@ -196,18 +201,23 @@ class Header extends React.Component {
 
       console.log(this.props);
 
+      // Dependent classes
+      let syncClasses = ["sync"];
+      if (this.props.syncStatus == window.asanaModel.allStatuses.SYNC_IN_PROGRESS)
+         syncClasses.push("active");
+
       return (
          <form className="header">
-            <select value={localStorage.getItem("currentWorkspace")} onChange={this.props.handleWorkspaceSelect} className="workspace-select">{workspaces}</select>
+            <select tabIndex={nextTabIndex()} value={localStorage.getItem("currentWorkspace")} onChange={this.props.handleWorkspaceSelect} className="workspace-select">{workspaces}</select>
 
             <label className="dateCheckbox">
-               <input type="checkbox" checked={localStorage.getItem("dueToday")}
+               <input tabIndex={nextTabIndex()} type="checkbox" checked={localStorage.getItem("dueToday")}
                   onChange={this.props.handleDateChange}
                />
                Today's tasks only
             </label>
 
-            <img src="images/sync.svg" className="sync" onClick={this.props.handleSync} />
+            <img tabIndex={nextTabIndex()} src="images/sync.svg" className={syncClasses.join(" ")} onClick={this.props.handleSync} />
          </form>
       );
    }
@@ -257,6 +267,15 @@ class Task extends React.Component {
    }
 
    completeTask(event) {
+      console.log(event, event.target);
+
+      // We can complete either with a click, enter, or space. If this was a keypress, let's make sure it was a space or enter key
+      if (event.type === "keypress") {
+         if (!(event.charCode === 32 || event.charCode === 13)) { // Space or Enter
+            return;            
+         }
+      }
+
       if (!this.state.completed) {
          window.asanaModel.completeTask(this.props.taskId);
          this.setState({
@@ -279,8 +298,8 @@ class Task extends React.Component {
          
 
       return (
-         <div
-            className={`task ${extraClasses.join(" ")}`} onClick={this.completeTask}>
+         <div tabIndex={nextTabIndex()}
+            className={`task ${extraClasses.join(" ")}`} onKeyPress={this.completeTask} onClick={this.completeTask}>
             <div className="check-and-name">
                <div className="check">
                   <svg viewBox="0 0 32 32">
