@@ -40,7 +40,7 @@ These notes were written for myself while developing. Might be using a lot of my
 - [x] Confirm we fail gracefully
 - [x] Finish documentation
 - [x] Fix complete+undo changing tabindex
-- [ ] Figure out submission to web store, then do it
+- [x] Figure out submission to web store, then do it
 
 ### Post Launch
 - [ ] Handle no-project tasks
