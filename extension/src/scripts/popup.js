@@ -60,7 +60,7 @@ class Extension extends React.Component {
          loaded: false,
          synced: false,
       });
-      console.log("Waiting for sync");
+      // console.log("Waiting for sync");
       // Take model data after we've synced
       window.asanaModel.waitForSync()
       .then(() => {
@@ -75,7 +75,7 @@ class Extension extends React.Component {
             workspaces: workspaces,
             tasks: tasks
          });
-            console.log("sync finished")
+            // console.log("sync finished")
       });
 
    }
@@ -164,7 +164,7 @@ class Extension extends React.Component {
 
    render() {
 
-      console.log("==================================")
+      // console.log("==================================")
 
       return (
          <div className="extension">
@@ -273,9 +273,9 @@ class TaskList extends React.Component {
          );
       });
 
-      console.log("Logging tasks");
-      console.log(tasks);
-      console.log("Done logging");
+      // console.log("Logging tasks");
+      // console.log(tasks);
+      // console.log("Done logging");
       
       return (
             <div className="task-list">{tasks}</div>
@@ -299,7 +299,7 @@ class Task extends React.Component {
 
    uncomplete() {
       window.asanaModel.uncompleteTask(this.props.data.id);
-      console.log(this.props.data.name, this.state)
+      // console.log(this.props.data.name, this.state)
    }
 
 
@@ -342,9 +342,9 @@ class Task extends React.Component {
 
    render() {
 
-      console.log("logging task data");
-      console.log("props:", this.props)
-      console.log("state:", this.state)
+      // console.log("logging task data");
+      // console.log("props:", this.props)
+      // console.log("state:", this.state)
 
       // Should we move this to TaskList? (I don't think so)
       // let extraClasses = this.state.extraClasses.slice();

@@ -4,45 +4,8 @@ These notes were written for myself while developing. Might be using a lot of my
 
 ## To Do
 
-- [x] Decide on file structure
-- [x] Write out process chain
-- [x] Figure out the JSON API output
-- [x] Figure out how to connect with Asana API
-- [x] Finish build pipeline
-- [x] Figure out unit tests
-   - User info GET request
-   - Workspace list GET request
-   - Projects list GET request
-   - Tasks list GET request
-   - Task complete POST request
-- [x] Write unit tests
-- [x] Make popup mockup
-- [x] Identify UI hierarchy (popup and options)
-- [x] Static popup page (React, HTML)
-- [x] Static options page (React, HTML)
-- [x] CSS option and popup
-- [x] Identify minimal state rep
-- [x] Identify state location
-- [x] Manual syncing
-- [x] Task completion
-- [x] Task due at date
-- [x] Do something with sections
-- [x] Handle long task names
-- [x] Get proxima nova font (or suitable alternative)
-- [x] Keyboard navigation
-- [x] Ignore blank tasks
-- [x] New icon
-- [x] Undo complete notification
-- [x] Give option to show all tasks or all assigned to a person
-- [x] Style options page
-- [x] Nicer syncing screen
-- [x] Add a "Go here for your personal access token"
-- [x] Confirm we fail gracefully
-- [x] Finish documentation
-- [x] Fix complete+undo changing tabindex
-- [x] Figure out submission to web store, then do it
-
-### Post Launch
+- [ ] Test on several devices
+- [ ] Test with multiple assignees
 - [ ] Handle no-project tasks
 - [ ] Handle subtasks
 - [ ] Task tags

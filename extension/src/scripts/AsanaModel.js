@@ -126,14 +126,19 @@ export default class Asana_model {
             resolve();
 
          }, err => {
+            // chrome.extension.getBackgroundPage().console.log(Object.keys(err));
+
             // How did the res fail?
             if (err.status === 401)
                if (localStorage.getItem("accessToken"))
                   this.status = this.allStatuses.BAD_TOKEN;
                else
-                  this.status = this.allStatuses.NO_TOKEN;            
+                  this.status = this.allStatuses.SYNC_ERROR;
             else
-               this.status = this.allStatuses.SYNC_ERROR;
+               if (!Object.keys(err).length)
+                  this.status = this.allStatuses.NO_TOKEN;            
+               else
+                  this.status = this.allStatuses.SYNC_ERROR;
 
             reject("Couldn't retrieve personal information");
          });
@@ -269,11 +274,11 @@ export default class Asana_model {
             this.status = this.allStatuses.SYNC_SUCCESS;
             // Is this how we should handle success?
             resolve();
-         })
-         .catch(reason => {
-            // chrome.extension.getBackgroundPage().console.error(reason);
-            reject(reason);
-         });         
+         });
+         // .catch(reason => {
+         //    // chrome.extension.getBackgroundPage().console.error(reason);
+         //    reject(reason);
+         // });         
       });
    }
 
