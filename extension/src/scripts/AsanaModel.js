@@ -188,7 +188,7 @@ export default class Asana_model {
                // Get list of tasks in each project
                this.client.tasks.findByProject(project.id, {
                   completed_since: 'now',
-                  // assignee: (localStorage.getItem("includeUnassigned") ? this.user.id : null),
+                  // assignee: localStorage.getItem("includeUnassigned") ? this.user.id : null),
                   opt_fields: 'name,id,due_on,due_at,completed,assignee'
                }).then(res => {
                   currentIdx++;

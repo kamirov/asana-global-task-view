@@ -130,27 +130,27 @@ class Extension extends React.Component {
       }  
 
       // Filter by date
-      // if (localStorage.getItem("dueToday")) {
-      //    let today = new Date();
-      //    today.setHours(0, 0, 0, 0);
+      if (localStorage.getItem("dueToday")) {
+         let today = new Date();
+         today.setHours(0, 0, 0, 0);
 
-      //    let preDateTasks = tasks;
-      //    tasks = [];
-      //    preDateTasks.forEach((task) => {
-      //       // Only look at tasks with a due date
-      //       if (task.dueOn) {
+         let preDateTasks = tasks;
+         tasks = [];
+         preDateTasks.forEach((task) => {
+            // Only look at tasks with a due date
+            if (task.dueOn) {
 
-      //          // Have to do some fiddling with the date returned by Asana. I'm not sure why, but when converted to a Date, it's off by one day.
-      //          let dueOn = new Date(task.dueOn);
-      //          dueOn.setHours(0,0,0,0);
-      //          dueOn.setDate(dueOn.getDate() + 1);
+               // Have to do some fiddling with the date returned by Asana. I'm not sure why, but when converted to a Date, it's off by one day.
+               let dueOn = new Date(task.dueOn);
+               dueOn.setHours(0,0,0,0);
+               dueOn.setDate(dueOn.getDate() + 1);
 
-      //          if (today.getTime() === dueOn.getTime())
-      //             tasks.push(task); 
-      //       }
-      //  });
+               if (today.getTime() === dueOn.getTime())
+                  tasks.push(task); 
+            }
+       });
        
-      // }
+      }
 
       return tasks;
    }
