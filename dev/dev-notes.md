@@ -38,11 +38,11 @@ These notes were written for myself while developing. Might be using a lot of my
 - [x] Nicer syncing screen
 - [x] Add a "Go here for your personal access token"
 - [x] Confirm we fail gracefully
-- [ ] Finish documentation
+- [x] Finish documentation
+- [x] Fix complete+undo changing tabindex
 - [ ] Figure out submission to web store, then do it
 
 ### Post Launch
-- [ ] Undoability
 - [ ] Handle no-project tasks
 - [ ] Handle subtasks
 - [ ] Task tags

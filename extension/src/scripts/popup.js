@@ -10,6 +10,16 @@ function nextTabIndex() {
    return window.tabIndex++;
 }
 
+function clearNotifications() {
+   chrome.notifications.getAll((notifications) => {
+      let notificationIds = Object.keys(notifications);
+
+      notificationIds.forEach((notificationId) => {
+         chrome.notifications.clear(notificationId);
+      });
+   });
+}
+
 class Extension extends React.Component {
    constructor(props) {
       super(props);
@@ -30,15 +40,7 @@ class Extension extends React.Component {
 
    handleSync(event) {
 
-      // Clear any notifications
-      chrome.notifications.getAll((notifications) => {
-         let notificationIds = Object.keys(notifications);
-
-         notificationIds.forEach((notificationId) => {
-            chrome.notifications.clear(notificationId);
-         });
-      });
-
+      clearNotifications();
       window.asanaModel.sync();
       this.refresh();
    }
@@ -58,30 +60,33 @@ class Extension extends React.Component {
          loaded: false,
          synced: false,
       });
-
+      console.log("Waiting for sync");
       // Take model data after we've synced
       window.asanaModel.waitForSync()
       .then(() => {
 
          this.syncing = false;
-
+         
+         let workspaces = this.formatWorkspaces();
+         let tasks = this.filterTasks();
          this.setState({
             loaded: true,
             synced: true,
-            workspaces: this.formatWorkspaces(),
-            tasks: this.filterTasks()
+            workspaces: workspaces,
+            tasks: tasks
          });
-      }).catch((err) => {
-         console.error(err);
+            console.log("sync finished")
       });
 
    }
 
    handleWorkspaceSelect(event) {
+      clearNotifications();
       localStorage.setItem("currentWorkspace", event.target.value);
 
+      let tasks = this.filterTasks();
       this.setState({
-         tasks: this.filterTasks()
+         tasks: tasks
       });
    }
 
@@ -122,31 +127,30 @@ class Extension extends React.Component {
             if (window.asanaModel.items[workspaceId])
                tasks = [...tasks, ...window.asanaModel.items[workspaceId].tasks];
          }
-
       }  
 
       // Filter by date
-      if (localStorage.getItem("dueToday")) {
-         let today = new Date();
-         today.setHours(0, 0, 0, 0);
+      // if (localStorage.getItem("dueToday")) {
+      //    let today = new Date();
+      //    today.setHours(0, 0, 0, 0);
 
-         let preDateTasks = tasks;
-         tasks = [];
-         preDateTasks.forEach((task) => {
-            // Only look at tasks with a due date
-            if (task.dueOn) {
+      //    let preDateTasks = tasks;
+      //    tasks = [];
+      //    preDateTasks.forEach((task) => {
+      //       // Only look at tasks with a due date
+      //       if (task.dueOn) {
 
-               // Have to do some fiddling with the date returned by Asana. I'm not sure why, but when converted to a Date, it's off by one day.
-               let dueOn = new Date(task.dueOn);
-               dueOn.setHours(0,0,0,0);
-               dueOn.setDate(dueOn.getDate() + 1);
+      //          // Have to do some fiddling with the date returned by Asana. I'm not sure why, but when converted to a Date, it's off by one day.
+      //          let dueOn = new Date(task.dueOn);
+      //          dueOn.setHours(0,0,0,0);
+      //          dueOn.setDate(dueOn.getDate() + 1);
 
-               if (today.getTime() === dueOn.getTime())
-                  tasks.push(task); 
-            }
-       });
+      //          if (today.getTime() === dueOn.getTime())
+      //             tasks.push(task); 
+      //       }
+      //  });
        
-      }
+      // }
 
       return tasks;
    }
@@ -160,15 +164,12 @@ class Extension extends React.Component {
 
    render() {
 
-      let extensionContents;
-      let className = "extension";
+      console.log("==================================")
 
       return (
          <div className="extension">
-            <div className="extension">
-               <Header handleWorkspaceSelect={this.handleWorkspaceSelect} handleDateChange={this.handleDateChange} handleSync={this.handleSync} workspaces={this.state.workspaces} />
-               <TaskList tasks={this.state.tasks} />
-            </div>
+            <Header handleWorkspaceSelect={this.handleWorkspaceSelect} handleDateChange={this.handleDateChange} handleSync={this.handleSync} workspaces={this.state.workspaces} />
+            <TaskList tasks={this.state.tasks} />
          </div>
       );
    }
@@ -209,7 +210,6 @@ class Header extends React.Component {
          syncErrorMessage = <div className="sync-error-message">Personal Access Token is incorrect. <span className="link-like" onClick={this.openOptionsPage}>Please confirm it.</span></div>;
 
 
-
       // Dependent classes
       let syncClasses = ["sync"];
       if (window.asanaModel.status == window.asanaModel.allStatuses.SYNC_IN_PROGRESS)
@@ -242,34 +242,40 @@ class TaskList extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
-         tasks: null
+         taskCount: null
       };
     
+      this.complete = this.complete.bind(this);
       this.uncomplete = this.uncomplete.bind(this);
    }
 
+   complete() {
+     this.setState({ taskCount: this.state.taskCount + 1 });
+   }
 
    uncomplete(notificationId, buttonIndex) {
       chrome.notifications.clear(notificationId);
-      
       this.refs[notificationId].uncomplete();
-   }
-
+      this.setState({ taskCount: this.state.taskCount - 1 });
+     }
 
    componentDidMount() {
       chrome.notifications.onButtonClicked.addListener(this.uncomplete);
+      this.setState({ taskCount: this.props.tasks.length });
    }
 
    render() {
       // Make task list
       let tasks = [];
       this.props.tasks.forEach((task) => {
-      
-
          tasks.push(
-            <Task ref={task.id} taskId={task.id} taskName={task.name} project={task.project} workspace={task.workspace} />
+            <Task ref={task.id} data={task} onComplete={this.complete} />
          );
       });
+
+      console.log("Logging tasks");
+      console.log(tasks);
+      console.log("Done logging");
       
       return (
             <div className="task-list">{tasks}</div>
@@ -292,12 +298,8 @@ class Task extends React.Component {
 
 
    uncomplete() {
-      window.asanaModel.uncompleteTask(this.props.taskId);
-      
-      this.setState({
-         completed: false,
-         extraClasses: []
-      })
+      window.asanaModel.uncompleteTask(this.props.data.id);
+      console.log(this.props.data.name, this.state)
    }
 
 
@@ -310,36 +312,48 @@ class Task extends React.Component {
       }
 
       if (!this.state.completed) {
-         window.asanaModel.completeTask(this.props.taskId);
-         this.setState({
-            completed: true,
-            extraClasses: ["completed"]
-         });
+         // this.setState({
+         //    completed: true,
+         //    extraClasses: ["completed"]
+         // });
 
+         window.asanaModel.completeTask(this.props.data.id);
+
+         // Notify user
          var notificationOptions = {
             type: "list",
             title: "Task completed",
             message: "",
             items: [{ 
-               title: `${this.props.taskName}`, 
-               message: `${this.props.workspace}, ${this.props.project}`
+               title: `${this.props.data.name}`, 
+               message: `${this.props.data.workspace}, ${this.props.data.project}`
             }],
             buttons: [{
                "title": "Undo"
             }],
             iconUrl: "images/icon-32.png",
          }
-         chrome.notifications.create(this.props.taskId.toString(), notificationOptions);
+         chrome.notifications.create(this.props.data.id.toString(), notificationOptions);         
 
+         this.props.onComplete();
       }
    }
 
+
    render() {
 
+      console.log("logging task data");
+      console.log("props:", this.props)
+      console.log("state:", this.state)
+
       // Should we move this to TaskList? (I don't think so)
-      let extraClasses = this.state.extraClasses.slice();
-      if (this.props.taskName.endsWith(":"))
-         extraClasses.push("section");         
+      // let extraClasses = this.state.extraClasses.slice();
+      let extraClasses = [];
+      if (this.props.data.name.endsWith(":"))
+         extraClasses.push("section");
+      if (this.props.data.completed)
+         extraClasses.push("completed");
+         
 
       return (
          <div tabIndex={nextTabIndex()}
@@ -350,9 +364,9 @@ class Task extends React.Component {
                      <polygon points="27.672,4.786 10.901,21.557 4.328,14.984 1.5,17.812 10.901,27.214 30.5,7.615 "></polygon>
                   </svg>
                </div>
-               <span className="name">{this.props.taskName}</span>
+               <span className="name">{this.props.data.name}</span>
             </div>
-            <TaskInfo project={this.props.project} workspace={this.props.workspace} />
+            <TaskInfo project={this.props.data.project} workspace={this.props.data.workspace} />
          </div>
       );
    }
@@ -364,7 +378,6 @@ class TaskInfo extends React.Component {
       super(props);
       this.state = {
       };
-
    }
 
    render() {

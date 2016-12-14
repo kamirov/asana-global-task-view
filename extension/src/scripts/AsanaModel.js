@@ -39,25 +39,24 @@ export default class Asana_model {
 
    completeTask(taskId) {
 
-      // Remove the task from all workspaces
+      // Find the task
       for (let workspaceKey in this.items) {
          let tasks = this.items[workspaceKey].tasks;
 
-         // Find the item index in the workspace's list of tasks and remove it
+         // Find the item index in the workspace's list of tasks and complete it
          for(let k = 0; k < tasks.length; k++) {
             if (tasks[k].id === taskId) {
-               this.items[workspaceKey].tasks.splice(k, 1);
+               this.items[workspaceKey].tasks[k].completed = true;
                break;
             }
          }
       }
 
-      // Remove it from Asana
+      // Tell Asana
       return new Promise((resolve, reject) => {
          this.client.tasks.update(taskId, {
             completed: true
          }).then((response) => {
-
             resolve();
          }).catch((error) => {
             reject();
@@ -68,12 +67,24 @@ export default class Asana_model {
 
    uncompleteTask(taskId) {
 
-      // Remove it from Asana
+      // Find the task (abstract this so we're not repeating it)
+      for (let workspaceKey in this.items) {
+         let tasks = this.items[workspaceKey].tasks;
+
+         // Find the item index in the workspace's list of tasks and uncomplete it
+         for(let k = 0; k < tasks.length; k++) {
+            if (tasks[k].id === taskId) {
+               this.items[workspaceKey].tasks[k].completed = false;
+               break;
+            }
+         }
+      }
+
+      // Tell Asana
       return new Promise((resolve, reject) => {
          this.client.tasks.update(taskId, {
             completed: false
          }).then((response) => {
-
             resolve();
          }).catch((error) => {
             reject();
@@ -178,7 +189,7 @@ export default class Asana_model {
                this.client.tasks.findByProject(project.id, {
                   completed_since: 'now',
                   // assignee: (localStorage.getItem("includeUnassigned") ? this.user.id : null),
-                  opt_fields: 'name,id,due_on,due_at,assignee'
+                  opt_fields: 'name,id,due_on,due_at,completed,assignee'
                }).then(res => {
                   currentIdx++;
 
@@ -200,6 +211,7 @@ export default class Asana_model {
                         name: task.name,
                         dueAt: task.due_at,
                         dueOn: task.due_on,
+                        completed: task.completed,
                         project: project.name,
                         workspace: workspace.name
                      });
