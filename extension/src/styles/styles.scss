@@ -11,6 +11,15 @@
 
 // SEC_GLOBAL
 
+.hidden {
+    display: none;
+}
+
+.invisible {
+    opacity: 0;
+    visibility: hidden;
+}
+
 .truncate {
    white-space: nowrap;
    overflow: hidden;
@@ -74,6 +83,10 @@
          display: flex;
          justify-content: space-between;
          align-items: baseline;
+         
+         &.empty {
+             margin-bottom: 0;
+         }
          
          .workspace-select {
             font-family: "Montserrat", "proxima-nova", "Helvetica Neue", "Helvetica", Arial, sans-serif;

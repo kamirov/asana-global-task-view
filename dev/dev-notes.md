@@ -2,16 +2,6 @@
 
 These notes were written for myself while developing. Might be using a lot of my own notation, shorthand, and half-written-thoughts here. This is by no means documentation, though if cleaned up could be.
 
-## To Do
-
-- [ ] Test on several devices
-- [ ] Test with multiple assignees
-- [ ] Handle no-project tasks
-- [ ] Handle subtasks
-- [ ] Task tags
-- [ ] Handle multiproject tasks
-
-
 ## Process Chain
 - Asana-related state stored as struct
 - update_state listens for an update event

@@ -1,4 +1,4 @@
-import asana from 'asana';
+import asana from "asana";
 
 /**
  * Interfaces with the Asana REST API
@@ -25,6 +25,7 @@ export default class Asana_model {
       this.sync();
    }
 
+
    /**
     * Clears state properties
     */   
@@ -37,6 +38,12 @@ export default class Asana_model {
    }
 
 
+   /**
+    * Marks a task as completed
+    * @param {any} taskId
+    * @returns {Promise}
+    * 
+    */
    completeTask(taskId) {
 
       // Find the task
@@ -65,6 +72,13 @@ export default class Asana_model {
    }
 
 
+   /**
+    * 
+    * Marks a task as uncomplete
+    * @param {any} taskId
+    * @returns {Promise}
+    * 
+    */
    uncompleteTask(taskId) {
 
       // Find the task (abstract this so we're not repeating it)
@@ -94,7 +108,7 @@ export default class Asana_model {
    
 
    /**
-    * Gets user's personal and workspace data. Gets personal data directly, returns workspace data to be processed.
+    * Gets user's personal and workspace data through the Asana API. Gets personal data directly, returns workspace data to be processed.
     * @return {Promise} Promise containing workspace data
     */
    getUser() {
@@ -145,7 +159,11 @@ export default class Asana_model {
       });
    }
 
-
+   
+   /**
+    * Gets list of projects through Asana API
+    * @returns {Promise}
+    */
    getProjects() {
 
       return new Promise((resolve, reject) => {
@@ -179,6 +197,10 @@ export default class Asana_model {
    }
 
 
+   /**
+    * Gets list of tasks for each project through the Asana API
+    * @returns {Promise}
+    */
    getTasks() {
       return new Promise((resolve, reject) => {
 
@@ -282,6 +304,11 @@ export default class Asana_model {
       });
    }
 
+
+   /**
+    * Sets an interval timer to wait for the model's sync status to change
+    * @returns {Promise}
+    */
    waitForSync() {
       return new Promise((resolve, reject) => {
          // If we're syncing, then check back regularly until we're done
@@ -305,5 +332,3 @@ export default class Asana_model {
    }
 
 }
-
-// export {allStatuses, AsanaModel};

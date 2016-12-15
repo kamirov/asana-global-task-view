@@ -3,7 +3,7 @@
     "short_name": "Asana Global",
     "description": "Shows all Asana tasks assigned to you across all of your workspaces",
     "manifest_version": 2, 
-    "version": "1.0.0",
+    "version": "1.0.1",
 	"icons": { 
 		"32": "dist/images/icon-32.png",
 		"48": "dist/images/icon-48.png",
