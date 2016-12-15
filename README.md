@@ -8,7 +8,6 @@ Asana has long been my favorite personal management tool, but the inability to s
 
 ### Option A
 
-
 1. Clone this repo.
 
 1. Navigate to [chrome://extensions/](chrome://extensions/).
@@ -16,6 +15,10 @@ Asana has long been my favorite personal management tool, but the inability to s
 1. Enable Developer mode.
 
 1. Load the `extension` folder as an unpacked extension.
+
+### Option B
+
+Load the extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/asana-global-task-view/fnjdmopbhelaobdjbjpdkjjolnhbbfln).
 
 ## Initialization
 
@@ -30,9 +33,3 @@ Asana has long been my favorite personal management tool, but the inability to s
 1. Check "Include unassigned tasks" to show all tasks for which there are no assignees. Check this to see all tasks (good for if you use Asana alone or you want to keep track of others' tasks).
 
 1. Check "Only show today's tasks" to only show tasks that are due today.
-
-## Known Limitations
-
-1. Doesn't pull subtasks or project-less tasks.
-
-1. Doesn't work with tasks that span multiple projects (pulls them down twice).
